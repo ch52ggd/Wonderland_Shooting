@@ -5,7 +5,7 @@
             "translation": [
                 0.0,
                 0.0,
-                1.1575535
+                0.5
             ],
             "rotation": [
                 0.0,
@@ -20,7 +20,7 @@
             ]
         },
         "15": {
-            "name": "FloorPlane",
+            "name": "Floor",
             "components": [
                 {
                     "type": "mesh",
@@ -48,19 +48,20 @@
             "translation": [
                 0.0,
                 0.0,
-                1.1920928955078125e-7
+                1.1920930376163597e-7
             ],
             "rotation": [
-                -0.7072496,
+                -0.7071068,
                 0.0,
                 0.0,
-                0.7069638
+                0.7071067
             ],
             "scaling": [
                 4.0,
-                4.0,
-                4.0
-            ]
+                4.0000004,
+                4.0000004
+            ],
+            "parent": "257"
         },
         "17": {
             "name": "NonVrCamera",
@@ -91,7 +92,7 @@
             ],
             "translation": [
                 0.0,
-                0.0,
+                0.75,
                 0.0
             ],
             "rotation": [
@@ -193,7 +194,8 @@
                 1.0,
                 1.0,
                 1.0
-            ]
+            ],
+            "parent": "257"
         },
         "23": {
             "name": "Light.001",
@@ -221,7 +223,8 @@
                 1.0,
                 1.0,
                 1.0
-            ]
+            ],
+            "parent": "257"
         },
         "53": {
             "link": {
@@ -730,7 +733,8 @@
                         "indicatorYOffset": 0.0099999,
                         "eyeLeft": "18",
                         "eyeRight": "19"
-                    }
+                    },
+                    "active": false
                 }
             ],
             "translation": [
@@ -764,8 +768,8 @@
             "parent": null,
             "translation": [
                 0.0,
-                0.0388117,
-                1.5585094
+                0.0388116,
+                1.5585093
             ],
             "rotation": [
                 0.0,
@@ -1691,7 +1695,8 @@
                         "indicatorYOffset": 0.0099999,
                         "eyeLeft": "18",
                         "eyeRight": "19"
-                    }
+                    },
+                    "active": false
                 }
             ],
             "translation": [
@@ -1801,6 +1806,135 @@
                     "type": "howler-audio-listener",
                     "active": false
                 }
+            ]
+        },
+        "257": {
+            "name": "Background",
+            "parent": null,
+            "translation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        "258": {
+            "name": "Screen",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "7",
+                        "material": "20"
+                    }
+                }
+            ],
+            "translation": [
+                0.0,
+                2.5,
+                -4.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "scaling": [
+                1.125,
+                2.0,
+                1.0
+            ],
+            "parent": null
+        },
+        "260": {
+            "name": "Rocket",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "12",
+                        "material": "22"
+                    }
+                },
+                {
+                    "type": "collision",
+                    "collision": {
+                        "collider": "sphere",
+                        "sphere": {
+                            "radius": 0.15
+                        },
+                        "groups": 1
+                    }
+                }
+            ],
+            "scaling": [
+                0.15,
+                0.15,
+                1.0
+            ],
+            "translation": [
+                0.0,
+                1.0,
+                -3.999
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        },
+        "261": {
+            "name": "Enemy",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "7",
+                        "material": "25"
+                    }
+                },
+                {
+                    "type": "collision",
+                    "collision": {
+                        "collider": "box",
+                        "box": {
+                            "extents": [
+                                0.15,
+                                0.15,
+                                0.15
+                            ]
+                        },
+                        "groups": 33
+                    }
+                }
+            ],
+            "scaling": [
+                0.15,
+                0.15,
+                1.0
+            ],
+            "translation": [
+                0.0,
+                4.0,
+                -3.999
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
             ]
         }
     },
