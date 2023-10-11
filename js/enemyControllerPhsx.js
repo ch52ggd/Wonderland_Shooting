@@ -1,10 +1,10 @@
 import {Component, Property, PhysXComponent, CollisionEventType} from '@wonderlandengine/api';
 
 /**
- * enemyControllerCopy
+ * enemyControllerPhsx
  */
-export class EnemyControllerCopy extends Component {
-    static TypeName = 'enemyControllerCopy';
+export class EnemyControllerPhsx extends Component {
+    static TypeName = 'enemyControllerPhsx';
     /* Properties that are configurable in the editor */
     static Properties = {
         param: Property.float(1.0)
@@ -30,7 +30,7 @@ export class EnemyControllerCopy extends Component {
         //console.log('start() with param', this.param);
 
         this.speed = 0.03;
-        this.enemyPos = [0.5, 4.0, -4.0];
+        this.enemyPos = [0, 4.0, -4.0];
 
         this.check = false;
         //this.physXComponent = this.object.getComponent(PhysXComponent);
@@ -53,20 +53,15 @@ export class EnemyControllerCopy extends Component {
         if(this.enemyCurrPos[1] < 0){
 
             //console.log("Down");
-            this.enemyPos[1] = 4.0; //Reset enemy's y.position
+            //this.enemyPos[1] = 4.0; //Reset enemy's y.position
+            this.object.destroy();
         }
     }
 
     initCollision(){
         
-        // newEnemy.addComponent(PhysXComponent, {
-        //     shape: Shape.Box
-        // });
-
         this.rigidBody = this.object.getComponent('physx');
         console.log("RigidBody", this.rigidBody);
-
-
 
         this.rigidBody.onCollision(
 
@@ -84,7 +79,6 @@ export class EnemyControllerCopy extends Component {
                     //console.log("!!!");
                     return;
                 }
-
                 
             }.bind(this)
         )

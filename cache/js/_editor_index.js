@@ -4,7 +4,9 @@ import * as _E__git_CHOIJiho_Wonderland_Shooting_js_button_js from 'E:/git_CHOIJ
 _registerEditor(_E__git_CHOIJiho_Wonderland_Shooting_js_button_js);
 import * as _E__git_CHOIJiho_Wonderland_Shooting_js_enemyController_js from 'E:/git_CHOIJiho/Wonderland_Shooting/js/enemyController.js';
 _registerEditor(_E__git_CHOIJiho_Wonderland_Shooting_js_enemyController_js);
-import * as _E__git_CHOIJiho_Wonderland_Shooting_js_enemyControllerCopy_js from 'E:/git_CHOIJiho/Wonderland_Shooting/js/enemyControllerCopy.js';
-_registerEditor(_E__git_CHOIJiho_Wonderland_Shooting_js_enemyControllerCopy_js);
+import * as _E__git_CHOIJiho_Wonderland_Shooting_js_enemyControllerPhsx_js from 'E:/git_CHOIJiho/Wonderland_Shooting/js/enemyControllerPhsx.js';
+_registerEditor(_E__git_CHOIJiho_Wonderland_Shooting_js_enemyControllerPhsx_js);
 import * as _E__git_CHOIJiho_Wonderland_Shooting_js_enemySpawner_js from 'E:/git_CHOIJiho/Wonderland_Shooting/js/enemySpawner.js';
 _registerEditor(_E__git_CHOIJiho_Wonderland_Shooting_js_enemySpawner_js);
+import * as _E__git_CHOIJiho_Wonderland_Shooting_js_playerController_js from 'E:/git_CHOIJiho/Wonderland_Shooting/js/playerController.js';
+_registerEditor(_E__git_CHOIJiho_Wonderland_Shooting_js_playerController_js);

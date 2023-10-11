@@ -21,10 +21,10 @@ import {MouseLookComponent} from '@wonderlandengine/components';
 import {PlayerHeight} from '@wonderlandengine/components';
 import {TeleportComponent} from '@wonderlandengine/components';
 import {VrModeActiveSwitch} from '@wonderlandengine/components';
-import {WasdControlsComponent} from '@wonderlandengine/components';
 import {ButtonComponent} from './button.js';
 import {EnemyController} from './enemyController.js';
-import {EnemyControllerCopy} from './enemyControllerCopy.js';
+import {EnemyControllerPhsx} from './enemyControllerPhsx.js';
+import {PlayerController} from './playerController.js';
 /* wle:auto-imports:end */
 
 import {loadRuntime} from '@wonderlandengine/api';
@@ -92,10 +92,10 @@ engine.registerComponent(MouseLookComponent);
 engine.registerComponent(PlayerHeight);
 engine.registerComponent(TeleportComponent);
 engine.registerComponent(VrModeActiveSwitch);
-engine.registerComponent(WasdControlsComponent);
 engine.registerComponent(ButtonComponent);
 engine.registerComponent(EnemyController);
-engine.registerComponent(EnemyControllerCopy);
+engine.registerComponent(EnemyControllerPhsx);
+engine.registerComponent(PlayerController);
 /* wle:auto-register:end */
 
 engine.scene.load(`${Constants.ProjectName}.bin`).catch((e) => {

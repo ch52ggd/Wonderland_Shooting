@@ -15032,8 +15032,8 @@ __publicField(EnemyController, "Properties", {
   param: Property.float(1)
 });
 
-// E:/git_CHOIJiho/Wonderland_Shooting/js/enemyControllerCopy.js
-var EnemyControllerCopy = class extends Component {
+// E:/git_CHOIJiho/Wonderland_Shooting/js/enemyControllerPhsx.js
+var EnemyControllerPhsx = class extends Component {
   speed;
   check;
   physXComponent;
@@ -15043,7 +15043,7 @@ var EnemyControllerCopy = class extends Component {
   }
   start() {
     this.speed = 0.03;
-    this.enemyPos = [0.5, 4, -4];
+    this.enemyPos = [0, 4, -4];
     this.check = false;
     this.initCollision();
   }
@@ -15055,7 +15055,7 @@ var EnemyControllerCopy = class extends Component {
     this.object.setPositionLocal(this.enemyPos);
     this.enemyCurrPos = this.object.getPositionLocal();
     if (this.enemyCurrPos[1] < 0) {
-      this.enemyPos[1] = 4;
+      this.object.destroy();
     }
   }
   initCollision() {
@@ -15076,9 +15076,53 @@ var EnemyControllerCopy = class extends Component {
     );
   }
 };
-__publicField(EnemyControllerCopy, "TypeName", "enemyControllerCopy");
+__publicField(EnemyControllerPhsx, "TypeName", "enemyControllerPhsx");
 /* Properties that are configurable in the editor */
-__publicField(EnemyControllerCopy, "Properties", {
+__publicField(EnemyControllerPhsx, "Properties", {
+  param: Property.float(1)
+});
+
+// E:/git_CHOIJiho/Wonderland_Shooting/js/playerController.js
+var PlayerController = class extends Component {
+  speed;
+  moveLeft = false;
+  moveRight = false;
+  static onRegister(engine2) {
+  }
+  init() {
+  }
+  start() {
+    this.speed = 0.03;
+    this.playerPos = [0, 1, -4];
+    window.addEventListener("keydown", this.press.bind(this));
+    window.addEventListener("keyup", this.release.bind(this));
+  }
+  update(dt) {
+    if (this.moveLeft === true) {
+      this.playerPos[0] -= this.speed;
+    }
+    if (this.moveRight === true) {
+      this.playerPos[0] += this.speed;
+    }
+    this.object.setPositionLocal(this.playerPos);
+    this.playerCurrPos = this.object.getPositionLocal();
+  }
+  press(moving) {
+    if (moving.key === "a")
+      this.moveLeft = true;
+    if (moving.key === "d")
+      this.moveRight = true;
+  }
+  release(moving) {
+    if (moving.key === "a")
+      this.moveLeft = false;
+    if (moving.key === "d")
+      this.moveRight = false;
+  }
+};
+__publicField(PlayerController, "TypeName", "playerController");
+/* Properties that are configurable in the editor */
+__publicField(PlayerController, "Properties", {
   param: Property.float(1)
 });
 
@@ -15132,10 +15176,10 @@ engine.registerComponent(MouseLookComponent);
 engine.registerComponent(PlayerHeight);
 engine.registerComponent(TeleportComponent);
 engine.registerComponent(VrModeActiveSwitch);
-engine.registerComponent(WasdControlsComponent);
 engine.registerComponent(ButtonComponent);
 engine.registerComponent(EnemyController);
-engine.registerComponent(EnemyControllerCopy);
+engine.registerComponent(EnemyControllerPhsx);
+engine.registerComponent(PlayerController);
 engine.scene.load(`${Constants.ProjectName}.bin`).catch((e) => {
   console.error(e);
   window.alert(`Failed to load ${Constants.ProjectName}.bin:`, e);
