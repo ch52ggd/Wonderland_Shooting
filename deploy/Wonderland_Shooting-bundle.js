@@ -14994,6 +14994,74 @@ __publicField(ButtonComponent, "Properties", {
   hoverMaterial: Property.material()
 });
 
+// E:/git_CHOIJiho/Wonderland_Shooting/js/enemyController.js
+var EnemyController = class extends Component {
+  speed;
+  check;
+  static onRegister(engine2) {
+  }
+  init() {
+  }
+  start() {
+    this.speed = 0.03;
+    this.enemyPos = [0, 4, -3];
+    this.collisionComponent = this.object.getComponent(CollisionComponent);
+    this.check = false;
+  }
+  update(dt) {
+  }
+  isMove() {
+    this.enemyPos[1] -= this.speed;
+    this.object.setPositionLocal(this.enemyPos);
+    this.enemyCurrPos = this.object.getPositionLocal();
+    if (this.enemyCurrPos[1] < 0) {
+      this.enemyPos[1] = 4;
+    }
+  }
+  isCollision() {
+    this.overlaps = this.collisionComponent.queryOverlaps();
+    for (var otherCollider of this.overlaps) {
+      var otherObject = otherCollider.object;
+      console.log("???");
+    }
+  }
+};
+__publicField(EnemyController, "TypeName", "enemyController");
+/* Properties that are configurable in the editor */
+__publicField(EnemyController, "Properties", {
+  param: Property.float(1)
+});
+
+// E:/git_CHOIJiho/Wonderland_Shooting/js/enemyControllerCopy.js
+var EnemyControllerCopy = class extends Component {
+  speed;
+  check;
+  static onRegister(engine2) {
+  }
+  init() {
+  }
+  start() {
+    this.speed = 0.03;
+    this.enemyPos = [0.5, 4, -3];
+    this.check = false;
+  }
+  update(dt) {
+  }
+  isMove() {
+    this.enemyPos[1] -= this.speed;
+    this.object.setPositionLocal(this.enemyPos);
+    this.enemyCurrPos = this.object.getPositionLocal();
+    if (this.enemyCurrPos[1] < 0) {
+      this.enemyPos[1] = 4;
+    }
+  }
+};
+__publicField(EnemyControllerCopy, "TypeName", "enemyControllerCopy");
+/* Properties that are configurable in the editor */
+__publicField(EnemyControllerCopy, "Properties", {
+  param: Property.float(1)
+});
+
 // E:/git_CHOIJiho/Wonderland_Shooting/js/index.js
 var RuntimeOptions = {
   physx: false,
@@ -15045,6 +15113,8 @@ engine.registerComponent(PlayerHeight);
 engine.registerComponent(TeleportComponent);
 engine.registerComponent(VrModeActiveSwitch);
 engine.registerComponent(ButtonComponent);
+engine.registerComponent(EnemyController);
+engine.registerComponent(EnemyControllerCopy);
 engine.scene.load(`${Constants.ProjectName}.bin`).catch((e) => {
   console.error(e);
   window.alert(`Failed to load ${Constants.ProjectName}.bin:`, e);

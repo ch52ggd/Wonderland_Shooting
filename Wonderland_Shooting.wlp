@@ -1842,7 +1842,7 @@
             "translation": [
                 0.0,
                 2.5,
-                -4.0
+                -4.0999999
             ],
             "rotation": [
                 0.0,
@@ -1870,11 +1870,9 @@
                 {
                     "type": "collision",
                     "collision": {
-                        "collider": "sphere",
                         "sphere": {
                             "radius": 0.15
-                        },
-                        "groups": 1
+                        }
                     }
                 }
             ],
@@ -1906,9 +1904,13 @@
                     }
                 },
                 {
+                    "type": "enemyController",
+                    "active": true
+                },
+                {
                     "type": "collision",
                     "collision": {
-                        "collider": "box",
+                        "collider": "aabb",
                         "box": {
                             "extents": [
                                 0.15,
@@ -1916,7 +1918,13 @@
                                 0.15
                             ]
                         },
-                        "groups": 33
+                        "aabb": {
+                            "extents": [
+                                0.15,
+                                0.15,
+                                0.15
+                            ]
+                        }
                     }
                 }
             ],
@@ -1928,7 +1936,7 @@
             "translation": [
                 0.0,
                 4.0,
-                -3.999
+                -4.0
             ],
             "rotation": [
                 0.0,
@@ -1936,6 +1944,51 @@
                 0.0,
                 1.0
             ]
+        },
+        "264": {
+            "name": "EnemyCopy",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "7",
+                        "material": "25"
+                    }
+                },
+                {
+                    "type": "enemyControllerCopy"
+                },
+                {
+                    "type": "physx",
+                    "physx": {
+                        "shape": "box",
+                        "box": {
+                            "extents": [
+                                0.15,
+                                0.15,
+                                0.15
+                            ]
+                        }
+                    }
+                }
+            ],
+            "scaling": [
+                0.15,
+                0.15,
+                1.0
+            ],
+            "translation": [
+                0.5857142,
+                4.0,
+                -4.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "parent": null
         }
     },
     "meshes": {
@@ -2612,7 +2665,11 @@
                 "optionalFeatures": {
                     "local-floor": true
                 }
-            }
+            },
+            "visualizePhysX": true
+        },
+        "physx": {
+            "enable": true
         }
     },
     "animations": {},
