@@ -38,19 +38,18 @@ export class PlayerController extends Component {
     update(dt) {
         /* Called every frame. */
 
-        if(this.moveLeft === true){
-            
-            this.playerPos[0] -= this.speed;
-        }
-        if(this.moveRight === true){
+        // if(this.moveLeft === true) this.playerPos[0] -= this.speed;
+        // if(this.moveRight === true) this.playerPos[0] += this.speed;
 
-            this.playerPos[0] += this.speed;
-        }
-        this.object.setPositionLocal(this.playerPos);
+        // this.object.setPositionLocal(this.playerPos);
 
         this.playerCurrPos = this.object.getPositionLocal();
         
-        //console.log(this.playerCurrPos);
+        if(this.playerCurrPos[0] > -1 && this.playerCurrPos[0] < 1){
+            if(this.moveLeft === true) this.playerPos[0] -= this.speed;
+            if(this.moveRight === true) this.playerPos[0] += this.speed;
+        }
+        this.object.setPositionLocal(this.playerPos);
     }
 
     press(moving){
