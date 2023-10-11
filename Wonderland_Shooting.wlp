@@ -1968,7 +1968,9 @@
                                 0.15,
                                 0.15
                             ]
-                        }
+                        },
+                        "gravity": false,
+                        "kinematic": true
                     }
                 }
             ],
@@ -1981,6 +1983,46 @@
                 0.5857142,
                 4.0,
                 -4.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "parent": null
+        },
+        "266": {
+            "name": "RocketCopy",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "12",
+                        "material": "22"
+                    }
+                },
+                {
+                    "type": "physx",
+                    "physx": {
+                        "sphere": {
+                            "radius": 0.15
+                        },
+                        "simulate": true,
+                        "gravity": false,
+                        "kinematic": true
+                    }
+                }
+            ],
+            "scaling": [
+                0.15,
+                0.15,
+                1.0
+            ],
+            "translation": [
+                0.5,
+                1.0,
+                -3.999
             ],
             "rotation": [
                 0.0,

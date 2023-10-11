@@ -15036,16 +15036,19 @@ __publicField(EnemyController, "Properties", {
 var EnemyControllerCopy = class extends Component {
   speed;
   check;
+  physXComponent;
   static onRegister(engine2) {
   }
   init() {
   }
   start() {
     this.speed = 0.03;
-    this.enemyPos = [0.5, 4, -3];
+    this.enemyPos = [0.5, 4, -4];
     this.check = false;
+    this.initCollision();
   }
   update(dt) {
+    this.isMove();
   }
   isMove() {
     this.enemyPos[1] -= this.speed;
@@ -15054,6 +15057,23 @@ var EnemyControllerCopy = class extends Component {
     if (this.enemyCurrPos[1] < 0) {
       this.enemyPos[1] = 4;
     }
+  }
+  initCollision() {
+    this.rigidBody = this.object.getComponent("physx");
+    console.log("RigidBody", this.rigidBody);
+    this.rigidBody.onCollision(
+      function(type, other) {
+        if (type === CollisionEventType.Touch) {
+          console.log("Collision check");
+          setTimeout(() => {
+            this.object.destroy();
+          }, 0);
+          return;
+        } else {
+          return;
+        }
+      }.bind(this)
+    );
   }
 };
 __publicField(EnemyControllerCopy, "TypeName", "enemyControllerCopy");
@@ -15064,7 +15084,7 @@ __publicField(EnemyControllerCopy, "Properties", {
 
 // E:/git_CHOIJiho/Wonderland_Shooting/js/index.js
 var RuntimeOptions = {
-  physx: false,
+  physx: true,
   loader: false,
   xrFramebufferScaleFactor: 1,
   canvas: "canvas"
@@ -15112,6 +15132,7 @@ engine.registerComponent(MouseLookComponent);
 engine.registerComponent(PlayerHeight);
 engine.registerComponent(TeleportComponent);
 engine.registerComponent(VrModeActiveSwitch);
+engine.registerComponent(WasdControlsComponent);
 engine.registerComponent(ButtonComponent);
 engine.registerComponent(EnemyController);
 engine.registerComponent(EnemyControllerCopy);

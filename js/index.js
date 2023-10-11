@@ -21,6 +21,7 @@ import {MouseLookComponent} from '@wonderlandengine/components';
 import {PlayerHeight} from '@wonderlandengine/components';
 import {TeleportComponent} from '@wonderlandengine/components';
 import {VrModeActiveSwitch} from '@wonderlandengine/components';
+import {WasdControlsComponent} from '@wonderlandengine/components';
 import {ButtonComponent} from './button.js';
 import {EnemyController} from './enemyController.js';
 import {EnemyControllerCopy} from './enemyControllerCopy.js';
@@ -31,7 +32,7 @@ import * as API from '@wonderlandengine/api'; // Deprecated: Backward compatibil
 
 /* wle:auto-constants:start */
 const RuntimeOptions = {
-    physx: false,
+    physx: true,
     loader: false,
     xrFramebufferScaleFactor: 1,
     canvas: 'canvas',
@@ -91,6 +92,7 @@ engine.registerComponent(MouseLookComponent);
 engine.registerComponent(PlayerHeight);
 engine.registerComponent(TeleportComponent);
 engine.registerComponent(VrModeActiveSwitch);
+engine.registerComponent(WasdControlsComponent);
 engine.registerComponent(ButtonComponent);
 engine.registerComponent(EnemyController);
 engine.registerComponent(EnemyControllerCopy);
