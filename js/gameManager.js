@@ -1,20 +1,16 @@
 import {Component, Property} from '@wonderlandengine/api';
 
 /**
- * enemySpawner
+ * gameManager
  */
-export class EnemySpawner extends Component {
-    static TypeName = 'enemySpawner';
+export class GameManager extends Component {
+    static TypeName = 'gameManager';
     /* Properties that are configurable in the editor */
     static Properties = {
-        param: Property.float(1.0),
-
-        //enemyPrefab: Property.object()
+        param: Property.float(1.0)
     };
 
-    time = 0;
-    spawnInterval = 3;
-    enemyGroup;
+    score;
 
     static onRegister(engine) {
         /* Triggered when this component class is registered.
@@ -28,28 +24,23 @@ export class EnemySpawner extends Component {
 
     start() {
         //console.log('start() with param', this.param);
+
+        this.textBox = this.object.getComponent('text');
+        this.textBox.text = " ";
+
+        this.score = 0;
     }
 
     update(dt) {
         /* Called every frame. */
-
-
-
-        //Enemy spawn interval control
-        this.time += dt;
-        this.timeRound = Math.round(this.time);
-        //console.log(this.timeRound);
-
-        if(this.timeRound >= this.spawnInterval){
-
-            this.time = 0;
-            this.isEnemySpawn();
-        }
     }
 
 
 
-    isEnemySpawn(){
-        //console.log("spawn?");
+    isKill(){
+
+        this.score += 500;
+        this.textBox.text = this.score;
+        return;
     }
 }

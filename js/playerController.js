@@ -11,10 +11,15 @@ export class PlayerController extends Component {
     };
 
     speed;
-    direction;
 
     moveLeft = false;
     moveRight = false;
+    moveUp = false;
+    moveDown = false;
+    spaceBar = false;
+
+    time = 0;
+    spawnInterval = 3;
 
     static onRegister(engine) {
         /* Triggered when this component class is registered.
@@ -29,7 +34,7 @@ export class PlayerController extends Component {
     start() {
         //console.log('start() with param', this.param);
 
-        this.speed = 0.0;
+        this.speed = 0.03;
         this.playerPos = [0, 1, -4];
 
         this.direction = 1;
@@ -43,40 +48,77 @@ export class PlayerController extends Component {
     update(dt) {
         /* Called every frame. */
 
+        this.isMove();
+
+
+
+        //Bullet shooting interval control
+        this.time += dt;
+        this.timeRound = Math.round(this.time);
+        //console.log(this.timeRound);
+
+        if(this.timeRound >= this.spawnInterval){
+            
+            this.time = 0;
+            this.isBulletShoot();
+        }
+    }
+
+    press(moving){
+
+        if(moving.key === 'w') this.moveUp = true; //up
+        if(moving.key === 's') this.moveDown = true; //Down
+        if(moving.key === 'a') this.moveLeft = true; //Left
+        if(moving.key === 'd') this.moveRight = true; //Right
+
+        if(moving.code === "Space") this.spaceBar = true;
+    }
+
+    release(moving){
+
+        if(moving.key === 'w') this.moveUp = false; //up
+        if(moving.key === 's') this.moveDown = false; //Down
+        if(moving.key === 'a') this.moveLeft = false; //Left
+        if(moving.key === 'd') this.moveRight = false; //Right
+
+        if(moving.code === "Space") this.spaceBar = false;
+    }
+
+    isMove(){
+
         this.playerCurrPos = this.object.getPositionLocal();
+
+        if(this.moveUp === true){
+
+            if(this.playerCurrPos[1] < 3) this.playerPos[1] += this.speed;
+        }
+
+        if(this.moveDown === true){
+
+            if(this.playerCurrPos[1] > 1) this.playerPos[1] -= this.speed;
+        }
 
         //Left
         if(this.moveLeft === true){
             
-            if(this.playerCurrPos[0] > -1){
-
-                this.speed = -0.03;
-                this.playerPos[0] += this.speed;
-            }
+            if(this.playerCurrPos[0] > -1) this.playerPos[0] -= this.speed;
         }
 
         //Right
         if(this.moveRight === true){
 
-            if(this.playerCurrPos[0] < 1){
-                
-                this.speed = 0.03;
-                this.playerPos[0] += this.speed;
-            }
+            if(this.playerCurrPos[0] < 1) this.playerPos[0] += this.speed;
         }
+
         this.object.setPositionLocal(this.playerPos);
+
+        if(this.spaceBar === true){
+            console.log("spaceBar");
+        }
     }
 
-    press(moving){
+    isBulletShoot(){
 
-        if(moving.key === 'a') this.moveLeft = true; //Left
-        if(moving.key === 'd') this.moveRight = true; //Right
-    }
-
-    release(moving){
-
-        if(moving.key === 'a') this.moveLeft = false; //Left
-        if(moving.key === 'd') this.moveRight = false; //Right
     }
 
 
@@ -97,11 +139,11 @@ export class PlayerController extends Component {
 
                     //console.log("Player collision check");
 
-                    if(otherObj.includes("Enemy")){
+                    // if(otherObj.includes("Enemy")){
                         
-                        //console.log("Name :", otherObj);
-                        setTimeout(() => {this.object.destroy();}, 1000);
-                    }
+                    //     //console.log("Name :", otherObj);
+                    //     setTimeout(() => {this.object.destroy();}, 1000);
+                    // }
 
                     return;
                 }

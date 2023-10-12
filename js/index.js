@@ -21,9 +21,12 @@ import {MouseLookComponent} from '@wonderlandengine/components';
 import {PlayerHeight} from '@wonderlandengine/components';
 import {TeleportComponent} from '@wonderlandengine/components';
 import {VrModeActiveSwitch} from '@wonderlandengine/components';
+import {Bullet} from './Bullet.js';
 import {ButtonComponent} from './button.js';
 import {EnemyController} from './enemyController.js';
 import {EnemyControllerPhsx} from './enemyControllerPhsx.js';
+import {EnemySpawner} from './enemySpawner.js';
+import {GameManager} from './gameManager.js';
 import {PlayerController} from './playerController.js';
 /* wle:auto-imports:end */
 
@@ -92,9 +95,12 @@ engine.registerComponent(MouseLookComponent);
 engine.registerComponent(PlayerHeight);
 engine.registerComponent(TeleportComponent);
 engine.registerComponent(VrModeActiveSwitch);
+engine.registerComponent(Bullet);
 engine.registerComponent(ButtonComponent);
 engine.registerComponent(EnemyController);
 engine.registerComponent(EnemyControllerPhsx);
+engine.registerComponent(EnemySpawner);
+engine.registerComponent(GameManager);
 engine.registerComponent(PlayerController);
 /* wle:auto-register:end */
 

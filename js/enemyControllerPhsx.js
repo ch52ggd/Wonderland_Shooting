@@ -1,5 +1,6 @@
 import {Component, Property, PhysXComponent, CollisionEventType} from '@wonderlandengine/api';
 
+import {GameManager} from './gameManager.js';
 /**
  * enemyControllerPhsx
  */
@@ -7,12 +8,14 @@ export class EnemyControllerPhsx extends Component {
     static TypeName = 'enemyControllerPhsx';
     /* Properties that are configurable in the editor */
     static Properties = {
-        param: Property.float(1.0)
+        param: Property.float(1.0),
+
+        gameManager: Property.object()
     };
 
-    speed;
+    gameManager;
 
-    check;
+    speed;
 
     //physXComponent;
 
@@ -29,10 +32,11 @@ export class EnemyControllerPhsx extends Component {
     start() {
         //console.log('start() with param', this.param);
 
+        this.gameManager = this.gameManager.getComponent(GameManager);
+
         this.speed = 0.03;
         this.enemyPos = [0, 6.0, -4.0];
 
-        this.check = false;
         //this.physXComponent = this.object.getComponent(PhysXComponent);
         this.initCollision();
     }
@@ -40,7 +44,7 @@ export class EnemyControllerPhsx extends Component {
     update(dt) {
         /* Called every frame. */
 
-        this.isMove();
+        //this.isMove();
     }
 
     isMove(){
@@ -66,22 +70,24 @@ export class EnemyControllerPhsx extends Component {
 
             function(type, other){
 
-                var otherObj = other.object.name;
-
                 if(type === CollisionEventType.Touch){
 
-                    console.log("Enemy collision check");
+                    var otherObj = other.object.name;
+
+                    //console.log("Enemy collision check");
 
                     if(otherObj.includes("Player")){
                         
                         console.log("Name :", otherObj);
-                        setTimeout(() => {this.object.destroy();}, 1000);
+                        //setTimeout(() => {this.object.destroy();}, 1000);
                     }
 
                     if(otherObj.includes("Bullet")){
 
+                        this.gameManager.isKill();
+
                         console.log("Name :", otherObj);
-                        setTimeout(() => {this.object.destroy();}, 0);
+                        //setTimeout(() => {this.object.destroy();}, 50);
                     }
 
                     return;

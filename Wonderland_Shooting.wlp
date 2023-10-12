@@ -513,7 +513,10 @@
                     }
                 },
                 {
-                    "type": "enemyControllerPhsx"
+                    "type": "enemyControllerPhsx",
+                    "enemyControllerPhsx": {
+                        "gameManager": "270"
+                    }
                 }
             ],
             "scaling": [
@@ -532,7 +535,7 @@
                 0.0,
                 1.0
             ],
-            "parent": null
+            "parent": "269"
         },
         "266": {
             "name": "PlayerPhsx",
@@ -576,7 +579,7 @@
                 0.0,
                 1.0
             ],
-            "parent": null
+            "parent": "269"
         },
         "14": {
             "name": "Player",
@@ -2056,7 +2059,7 @@
                         "shape": "box",
                         "box": {
                             "extents": [
-                                0.1,
+                                0.025,
                                 0.1,
                                 0.1
                             ]
@@ -2064,23 +2067,103 @@
                         "gravity": false,
                         "kinematic": true
                     }
+                },
+                {
+                    "type": "Bullet"
                 }
             ],
             "rotation": [
                 0.0,
                 0.0,
-                0.3826834,
-                0.9238795
+                0.0,
+                1.0
             ],
             "scaling": [
-                0.1,
+                0.025,
                 0.1,
                 1.0
             ],
             "translation": [
                 0.0,
-                1.5,
+                2.9,
                 -4.0
+            ],
+            "parent": "269"
+        },
+        "268": {
+            "name": "enemySpawner",
+            "components": [
+                {
+                    "type": "enemySpawner",
+                    "enemySpawner": {
+                        "enemyPrefab": "264"
+                    }
+                }
+            ],
+            "parent": "269",
+            "translation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        "269": {
+            "name": "Shooting",
+            "parent": null,
+            "translation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        "270": {
+            "name": "gameManager",
+            "parent": "269",
+            "components": [
+                {
+                    "type": "gameManager"
+                },
+                {
+                    "type": "text"
+                }
+            ],
+            "translation": [
+                0.0,
+                5.0,
+                -4.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "scaling": [
+                3.0,
+                3.0,
+                1.0
             ]
         }
     },
