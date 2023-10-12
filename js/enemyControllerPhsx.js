@@ -14,7 +14,7 @@ export class EnemyControllerPhsx extends Component {
 
     check;
 
-    physXComponent;
+    //physXComponent;
 
     static onRegister(engine) {
         /* Triggered when this component class is registered.
@@ -30,7 +30,7 @@ export class EnemyControllerPhsx extends Component {
         //console.log('start() with param', this.param);
 
         this.speed = 0.03;
-        this.enemyPos = [0, 4.0, -4.0];
+        this.enemyPos = [0, 6.0, -4.0];
 
         this.check = false;
         //this.physXComponent = this.object.getComponent(PhysXComponent);
@@ -50,11 +50,10 @@ export class EnemyControllerPhsx extends Component {
 
         this.enemyCurrPos = this.object.getPositionLocal(); //Get enemy's current position
         
-        if(this.enemyCurrPos[1] < 0){
+        if(this.enemyCurrPos[1] < -10){
 
-            //console.log("Down");
-            //this.enemyPos[1] = 4.0; //Reset enemy's y.position
-            this.object.destroy();
+            this.enemyPos[1] = 6.0; //Reset enemy's y.position
+            //this.object.destroy();
         }
     }
 
@@ -67,19 +66,30 @@ export class EnemyControllerPhsx extends Component {
 
             function(type, other){
 
+                var otherObj = other.object.name;
+
                 if(type === CollisionEventType.Touch){
 
-                    console.log("Collision check");
-                    
-                    setTimeout(() => {this.object.destroy();}, 0);
+                    console.log("Enemy collision check");
+
+                    if(otherObj.includes("Player")){
+                        
+                        console.log("Name :", otherObj);
+                        setTimeout(() => {this.object.destroy();}, 1000);
+                    }
+
+                    if(otherObj.includes("Bullet")){
+
+                        console.log("Name :", otherObj);
+                        setTimeout(() => {this.object.destroy();}, 0);
+                    }
 
                     return;
                 }
                 else{
-                    //console.log("!!!");
+
                     return;
                 }
-                
             }.bind(this)
         )
     }

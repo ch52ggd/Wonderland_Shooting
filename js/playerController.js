@@ -1,4 +1,4 @@
-import {Component, Property} from '@wonderlandengine/api';
+import {Component, Property, CollisionEventType} from '@wonderlandengine/api';
 
 /**
  * playerController
@@ -11,6 +11,8 @@ export class PlayerController extends Component {
     };
 
     speed;
+    direction;
+
     moveLeft = false;
     moveRight = false;
 
@@ -27,42 +29,87 @@ export class PlayerController extends Component {
     start() {
         //console.log('start() with param', this.param);
 
-        this.speed = 0.03;
+        this.speed = 0.0;
         this.playerPos = [0, 1, -4];
+
+        this.direction = 1;
 
         window.addEventListener('keydown', this.press.bind(this));
         window.addEventListener('keyup', this.release.bind(this));
 
+        this.initCollision();
     }
 
     update(dt) {
         /* Called every frame. */
 
-        // if(this.moveLeft === true) this.playerPos[0] -= this.speed;
-        // if(this.moveRight === true) this.playerPos[0] += this.speed;
-
-        // this.object.setPositionLocal(this.playerPos);
-
         this.playerCurrPos = this.object.getPositionLocal();
-        
-        if(this.playerCurrPos[0] > -1 && this.playerCurrPos[0] < 1){
-            if(this.moveLeft === true) this.playerPos[0] -= this.speed;
-            if(this.moveRight === true) this.playerPos[0] += this.speed;
+
+        //Left
+        if(this.moveLeft === true){
+            
+            if(this.playerCurrPos[0] > -1){
+
+                this.speed = -0.03;
+                this.playerPos[0] += this.speed;
+            }
+        }
+
+        //Right
+        if(this.moveRight === true){
+
+            if(this.playerCurrPos[0] < 1){
+                
+                this.speed = 0.03;
+                this.playerPos[0] += this.speed;
+            }
         }
         this.object.setPositionLocal(this.playerPos);
     }
 
     press(moving){
 
-        if(moving.key === 'a') this.moveLeft = true;
-
-        if(moving.key === 'd') this.moveRight = true;
+        if(moving.key === 'a') this.moveLeft = true; //Left
+        if(moving.key === 'd') this.moveRight = true; //Right
     }
 
     release(moving){
 
-        if(moving.key === 'a') this.moveLeft = false;
+        if(moving.key === 'a') this.moveLeft = false; //Left
+        if(moving.key === 'd') this.moveRight = false; //Right
+    }
 
-        if(moving.key === 'd') this.moveRight = false;
+
+
+    //Check Collision
+    initCollision(){
+        
+        this.rigidBody = this.object.getComponent('physx');
+        console.log("RigidBody", this.rigidBody);
+
+        this.rigidBody.onCollision(
+
+            function(type, other){
+
+                var otherObj = other.object.name;
+
+                if(type === CollisionEventType.Touch){
+
+                    //console.log("Player collision check");
+
+                    if(otherObj.includes("Enemy")){
+                        
+                        //console.log("Name :", otherObj);
+                        setTimeout(() => {this.object.destroy();}, 1000);
+                    }
+
+                    return;
+                }
+                else{
+
+                    return;
+                }
+            }.bind(this)
+        )
     }
 }

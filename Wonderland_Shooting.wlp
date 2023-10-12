@@ -535,7 +535,7 @@
             "parent": null
         },
         "266": {
-            "name": "RocketPhsx",
+            "name": "PlayerPhsx",
             "components": [
                 {
                     "type": "mesh",
@@ -2038,6 +2038,49 @@
                     "type": "howler-audio-listener",
                     "active": false
                 }
+            ]
+        },
+        "267": {
+            "name": "Bullet",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "7",
+                        "material": "26"
+                    }
+                },
+                {
+                    "type": "physx",
+                    "physx": {
+                        "shape": "box",
+                        "box": {
+                            "extents": [
+                                0.1,
+                                0.1,
+                                0.1
+                            ]
+                        },
+                        "gravity": false,
+                        "kinematic": true
+                    }
+                }
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.3826834,
+                0.9238795
+            ],
+            "scaling": [
+                0.1,
+                0.1,
+                1.0
+            ],
+            "translation": [
+                0.0,
+                1.5,
+                -4.0
             ]
         }
     },
