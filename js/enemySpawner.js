@@ -7,14 +7,11 @@ export class EnemySpawner extends Component {
     static TypeName = 'enemySpawner';
     /* Properties that are configurable in the editor */
     static Properties = {
-        param: Property.float(1.0),
-
-        //enemyPrefab: Property.object()
+        param: Property.float(1.0)
     };
 
     time = 0;
     spawnInterval = 3;
-    enemyGroup;
 
     static onRegister(engine) {
         /* Triggered when this component class is registered.

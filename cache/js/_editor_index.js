@@ -1,7 +1,9 @@
 import * as __wonderlandengine_components from '@wonderlandengine/components';
 _registerEditor(__wonderlandengine_components);
-import * as _E__git_CHOIJiho_Wonderland_Shooting_js_Bullet_js from 'E:/git_CHOIJiho/Wonderland_Shooting/js/Bullet.js';
-_registerEditor(_E__git_CHOIJiho_Wonderland_Shooting_js_Bullet_js);
+import * as _E__git_CHOIJiho_Wonderland_Shooting_js_bullet_js from 'E:/git_CHOIJiho/Wonderland_Shooting/js/bullet.js';
+_registerEditor(_E__git_CHOIJiho_Wonderland_Shooting_js_bullet_js);
+import * as _E__git_CHOIJiho_Wonderland_Shooting_js_bulletManager_js from 'E:/git_CHOIJiho/Wonderland_Shooting/js/bulletManager.js';
+_registerEditor(_E__git_CHOIJiho_Wonderland_Shooting_js_bulletManager_js);
 import * as _E__git_CHOIJiho_Wonderland_Shooting_js_button_js from 'E:/git_CHOIJiho/Wonderland_Shooting/js/button.js';
 _registerEditor(_E__git_CHOIJiho_Wonderland_Shooting_js_button_js);
 import * as _E__git_CHOIJiho_Wonderland_Shooting_js_enemyController_js from 'E:/git_CHOIJiho/Wonderland_Shooting/js/enemyController.js';

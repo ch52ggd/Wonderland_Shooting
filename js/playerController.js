@@ -1,5 +1,7 @@
 import {Component, Property, CollisionEventType} from '@wonderlandengine/api';
 
+import {BulletManager} from './bulletManager.js';
+
 /**
  * playerController
  */
@@ -7,7 +9,9 @@ export class PlayerController extends Component {
     static TypeName = 'playerController';
     /* Properties that are configurable in the editor */
     static Properties = {
-        param: Property.float(1.0)
+        param: Property.float(1.0),
+
+        bulletManager: Property.object()
     };
 
     speed;
@@ -34,6 +38,8 @@ export class PlayerController extends Component {
     start() {
         //console.log('start() with param', this.param);
 
+        this.bulletManager = this.bulletManager.getComponent(BulletManager);
+
         this.speed = 0.03;
         this.playerPos = [0, 1, -4];
 
@@ -49,6 +55,7 @@ export class PlayerController extends Component {
         /* Called every frame. */
 
         this.isMove();
+        //this.isShooting();
 
 
 
@@ -58,9 +65,10 @@ export class PlayerController extends Component {
         //console.log(this.timeRound);
 
         if(this.timeRound >= this.spawnInterval){
+
+            
             
             this.time = 0;
-            this.isBulletShoot();
         }
     }
 
@@ -86,7 +94,7 @@ export class PlayerController extends Component {
 
     isMove(){
 
-        this.playerCurrPos = this.object.getPositionLocal();
+        this.playerCurrPos = this.object.getPositionWorld();
 
         if(this.moveUp === true){
 
@@ -111,15 +119,21 @@ export class PlayerController extends Component {
         }
 
         this.object.setPositionLocal(this.playerPos);
+    }
+
+
+
+    /*
+    isShooting(){
 
         if(this.spaceBar === true){
             console.log("spaceBar");
+
+            this.bulletManager.spawnBullet();
         }
-    }
-
-    isBulletShoot(){
 
     }
+    */
 
 
 

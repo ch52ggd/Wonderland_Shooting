@@ -1,13 +1,17 @@
 import {Component, Property, CollisionEventType} from '@wonderlandengine/api';
 
+import {PlayerController} from './playerController.js';
+
 /**
- * Bullet
+ * bullet
  */
 export class Bullet extends Component {
-    static TypeName = 'Bullet';
+    static TypeName = 'bullet';
     /* Properties that are configurable in the editor */
     static Properties = {
-        param: Property.float(1.0)
+        param: Property.float(1.0),
+
+        player: Property.object()
     };
 
     speed;
@@ -25,35 +29,35 @@ export class Bullet extends Component {
     start() {
         //console.log('start() with param', this.param);
 
+        //this.playerComponent = this.player.getComponent(PlayerController);
+
         this.speed = 0.1;
-        this.bulletPos = [-0.5, 1, -4];
-
-
+        this.bulletPos = [0, 0, 0];
 
         //this.initCollision();
     }
 
     update(dt) {
         /* Called every frame. */
-
-        //this.isMove();
     }
 
-    isMove(){
 
-        this.bulletPos[1] += this.speed;
 
-        this.object.setPositionLocal(this.bulletPos);
+    /*
+    shootingBullet(){
 
-        this.bulletCurrPos = this.object.getPositionLocal(); //Get bullet's current position
+        //this.bulletPos[1] += this.speed;
+
+        //this.object.setPositionWorld(this.bulletPos);
+        this.bulletCurrPos = this.object.getPositionWorld(); //Get bullet's current position
         
         if(this.bulletCurrPos[1] > 6){
 
             this.bulletPos[1] = 1.0; //Reset bullet's y.position
             //this.object.destroy();
-        }
-
+        }        
     }
+    */
 
 
 

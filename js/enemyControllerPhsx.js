@@ -50,9 +50,9 @@ export class EnemyControllerPhsx extends Component {
     isMove(){
 
         this.enemyPos[1] -= this.speed; //Down
-        this.object.setPositionLocal(this.enemyPos); //Enemy position setting
+        this.object.setPositionWorld(this.enemyPos); //Enemy position setting
 
-        this.enemyCurrPos = this.object.getPositionLocal(); //Get enemy's current position
+        this.enemyCurrPos = this.object.getPositionWorld(); //Get enemy's current position
         
         if(this.enemyCurrPos[1] < -10){
 

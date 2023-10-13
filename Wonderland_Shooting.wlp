@@ -395,7 +395,7 @@
                 2.0,
                 1.0
             ],
-            "parent": null
+            "parent": "257"
         },
         "260": {
             "name": "Rocket",
@@ -560,7 +560,10 @@
                 },
                 {
                     "type": "playerController",
-                    "active": true
+                    "active": true,
+                    "playerController": {
+                        "bulletManager": "272"
+                    }
                 }
             ],
             "scaling": [
@@ -2069,7 +2072,11 @@
                     }
                 },
                 {
-                    "type": "Bullet"
+                    "type": "bullet",
+                    "bullet": {
+                        "player": "266"
+                    },
+                    "active": false
                 }
             ],
             "rotation": [
@@ -2096,7 +2103,8 @@
                 {
                     "type": "enemySpawner",
                     "enemySpawner": {
-                        "enemyPrefab": "264"
+                        "enemyPrefab": "264",
+                        "enemyComponent": "264"
                     }
                 }
             ],
@@ -2164,6 +2172,22 @@
                 3.0,
                 3.0,
                 1.0
+            ]
+        },
+        "272": {
+            "name": "bulletManager",
+            "parent": "269",
+            "components": [
+                {
+                    "type": "bulletManager",
+                    "bulletManager": {
+                        "gameManager": "270",
+                        "bullet": "267",
+                        "playerController": "266",
+                        "player": "266"
+                    },
+                    "active": true
+                }
             ]
         }
     },
