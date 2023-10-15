@@ -21,7 +21,7 @@ import {MouseLookComponent} from '@wonderlandengine/components';
 import {PlayerHeight} from '@wonderlandengine/components';
 import {TeleportComponent} from '@wonderlandengine/components';
 import {VrModeActiveSwitch} from '@wonderlandengine/components';
-import {Bullet} from './bullet.js';
+import {Bullet} from './Bullet.js';
 import {BulletManager} from './bulletManager.js';
 import {ButtonComponent} from './button.js';
 import {EnemyController} from './enemyController.js';

@@ -55,8 +55,8 @@ export class PlayerController extends Component {
         /* Called every frame. */
 
         this.isMove();
-        //this.isShooting();
-
+        this.isShooting();
+        
 
 
         //Bullet shooting interval control
@@ -64,9 +64,7 @@ export class PlayerController extends Component {
         this.timeRound = Math.round(this.time);
         //console.log(this.timeRound);
 
-        if(this.timeRound >= this.spawnInterval){
-
-            
+        if(this.timeRound >= this.spawnInterval){    
             
             this.time = 0;
         }
@@ -123,7 +121,6 @@ export class PlayerController extends Component {
 
 
 
-    /*
     isShooting(){
 
         if(this.spaceBar === true){
@@ -131,9 +128,7 @@ export class PlayerController extends Component {
 
             this.bulletManager.spawnBullet();
         }
-
     }
-    */
 
 
 

@@ -41,30 +41,26 @@ export class BulletManager extends Component {
     update(dt) {
         /* Called every frame. */
         
+        //this.spawnBullet();
     }
 
-    /*
     spawnBullet(){
 
-        // var obj = this.engine.scene.addObject();
-        // console.log(this.obj);
+        //var obj = this.engine.scene.addObject();
+        //console.log(this.obj);
         //this.spawnPos = this.playerComponent.playerCurrPos;
 
         this.spawnPos = this.player.getPositionWorld();
 
-        console.log(this.spawnPos);
-        //this.bullet.setPositionWorld(this.spawnPos);
+        //this.bullet.setPositionWorld(this.spawnPos); //총알 생성 위치 = 플레이어 현재 위치
+        this.bullet.setPositionWorld([this.spawnPos[0], this.spawnPos[1], this.spawnPos[2]]);
 
-        var newBullet;
-        newBullet = this.engine.scene.addObject(null, this.object);
+        // var newBullet;
+        // newBullet = this.engine.scene.addObject(null, this.object);
 
-        newBullet.setPositionWorld(this.spawnPos);
+        // newBullet.setPositionWorld(this.spawnPos);
+        // newBullet.addComponent(Bullet);
 
-        newBullet.addComponent(Bullet);
-
-        console.log("sss");
-
-        this.bulletComponent.shootingBullet();
+        console.log("???");
     }
-    */
 }
