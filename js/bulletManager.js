@@ -1,4 +1,4 @@
-import {Component, Property} from '@wonderlandengine/api';
+import {Component, PhysXComponent, Shape, Property} from '@wonderlandengine/api';
 
 import {PlayerController} from './playerController.js';
 import {Bullet} from './bullet.js';
@@ -13,13 +13,11 @@ export class BulletManager extends Component {
         param: Property.float(1.0),
 
         player: Property.object(),
-        bullet: Property.object()
+        bullet: Property.object(),
+
+        bulletMesh: Property.mesh(),
+        bulletMaterial: Property.material()
     };
-
-    //playerController;
-    //bullet;
-
-    parentObj;
 
     static onRegister(engine) {
         /* Triggered when this component class is registered.
@@ -36,31 +34,43 @@ export class BulletManager extends Component {
 
         this.playerComponent = this.player.getComponent(PlayerController);
         this.bulletComponent = this.bullet.getComponent(Bullet);
+
     }
 
     update(dt) {
         /* Called every frame. */
-        
-        //this.spawnBullet();
     }
 
     spawnBullet(){
 
-        //var obj = this.engine.scene.addObject();
-        //console.log(this.obj);
-        //this.spawnPos = this.playerComponent.playerCurrPos;
+        this.newBulletPos = this.playerComponent.playerCurrPos
 
-        this.spawnPos = this.player.getPositionWorld();
+        var obj = this.engine.scene.addObject(null);
 
-        //this.bullet.setPositionWorld(this.spawnPos); //총알 생성 위치 = 플레이어 현재 위치
-        this.bullet.setPositionWorld([this.spawnPos[0], this.spawnPos[1], this.spawnPos[2]]);
+        obj.addComponent('mesh', {
+            mesh: this.bulletMesh,
+            material: this.bulletMaterial
+        });
 
-        // var newBullet;
-        // newBullet = this.engine.scene.addObject(null, this.object);
+        obj.scaleLocal([[0.025], [0.1], [0.1]]);
 
-        // newBullet.setPositionWorld(this.spawnPos);
-        // newBullet.addComponent(Bullet);
+        obj.setPositionWorld(this.newBulletPos);
 
-        console.log("???");
+        obj.addComponent(PhysXComponent, {
+            shape: Shape.Box,
+            extents: [[0.025], [0.1], [0.1]],
+            // groupsMask: (1 << 4) | (1 << 5) | (1 << 6) | (1 << 3),
+            // blocksMask: (1 << 4) | (1 << 5) | (1 << 6) | (1 << 3),
+
+            allowSimulation: true,
+            trigger: false,
+            allowQuery: true,
+            simulate: true,
+            static: false,
+            gravity: false,
+            kinematic: true
+        });
+
+        obj.addComponent(Bullet);
     }
 }

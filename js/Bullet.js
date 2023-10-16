@@ -1,7 +1,5 @@
 import {Component, Property, CollisionEventType} from '@wonderlandengine/api';
 
-import {PlayerController} from './playerController.js';
-
 /**
  * bullet
  */
@@ -14,7 +12,7 @@ export class Bullet extends Component {
         player: Property.object()
     };
 
-    speed;
+    speed = 0.1;
 
     static onRegister(engine) {
         /* Triggered when this component class is registered.
@@ -29,43 +27,28 @@ export class Bullet extends Component {
     start() {
         //console.log('start() with param', this.param);
 
-        //this.playerComponent = this.player.getComponent(PlayerController);
-
-        this.speed = 0.1;
-        this.bulletPos = [0, 0, 0];
-
-        //this.initCollision();
+        this.initCollision();
     }
 
     update(dt) {
         /* Called every frame. */
+
+        this.bulletPos = this.object.getPositionWorld();
+
+        this.object.setPositionWorld([this.bulletPos[0], this.bulletPos[1] + this.speed, this.bulletPos[2]]);
+
+        if(this.bulletPos[1] > 7){
+
+            this.object.destroy();
+        } 
     }
-
-
-
-    /*
-    shootingBullet(){
-
-        //this.bulletPos[1] += this.speed;
-
-        //this.object.setPositionWorld(this.bulletPos);
-        this.bulletCurrPos = this.object.getPositionWorld(); //Get bullet's current position
-        
-        if(this.bulletCurrPos[1] > 6){
-
-            this.bulletPos[1] = 1.0; //Reset bullet's y.position
-            //this.object.destroy();
-        }        
-    }
-    */
 
 
 
     //Collision check
     initCollision(){
-        
+
         this.rigidBody = this.object.getComponent('physx');
-        console.log("RigidBody", this.rigidBody);
 
         this.rigidBody.onCollision(
 
@@ -74,15 +57,12 @@ export class Bullet extends Component {
                 if(type === CollisionEventType.Touch){
 
                     var otherObj = other.object.name;
+                    //console.log(otherObj);
+                    if(otherObj.includes("enemy")){
 
-                    //console.log("Bullet collision check");
-
-                    if(otherObj.includes("Enemy")){
-                        
-                        //console.log("Name :", otherObj);
+                        console.log("Name :", otherObj);
                         setTimeout(() => {this.object.destroy();}, 50);
                     }
-
                     return;
                 }
                 else{

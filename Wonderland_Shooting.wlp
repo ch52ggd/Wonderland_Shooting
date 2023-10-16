@@ -9,7 +9,7 @@
                         "mesh": "7",
                         "material": "20"
                     },
-                    "active": true
+                    "active": false
                 },
                 {
                     "type": "collision",
@@ -382,7 +382,7 @@
             "translation": [
                 0.0,
                 2.5,
-                -4.0999999
+                -4.0009999
             ],
             "rotation": [
                 0.0,
@@ -391,104 +391,14 @@
                 1.0
             ],
             "scaling": [
-                1.125,
-                2.0,
+                2.25,
+                4.0,
                 1.0
             ],
             "parent": "257"
         },
-        "260": {
-            "name": "Rocket",
-            "components": [
-                {
-                    "type": "mesh",
-                    "mesh": {
-                        "mesh": "12",
-                        "material": "22"
-                    }
-                },
-                {
-                    "type": "collision",
-                    "collision": {
-                        "sphere": {
-                            "radius": 0.15
-                        }
-                    }
-                }
-            ],
-            "scaling": [
-                0.15,
-                0.15,
-                1.0
-            ],
-            "translation": [
-                -3.0,
-                1.0,
-                -3.999
-            ],
-            "rotation": [
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "parent": null
-        },
-        "261": {
-            "name": "Enemy",
-            "components": [
-                {
-                    "type": "mesh",
-                    "mesh": {
-                        "mesh": "7",
-                        "material": "25"
-                    }
-                },
-                {
-                    "type": "enemyController",
-                    "active": true
-                },
-                {
-                    "type": "collision",
-                    "collision": {
-                        "collider": "aabb",
-                        "box": {
-                            "extents": [
-                                0.15,
-                                0.15,
-                                0.15
-                            ]
-                        },
-                        "aabb": {
-                            "extents": [
-                                0.15,
-                                0.15,
-                                0.15
-                            ]
-                        }
-                    }
-                }
-            ],
-            "scaling": [
-                0.15,
-                0.15,
-                1.0
-            ],
-            "translation": [
-                -3.0,
-                4.0,
-                -4.0
-            ],
-            "rotation": [
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "parent": null
-        },
         "264": {
-            "name": "EnemyPhsx",
+            "name": "enemyPhysx",
             "components": [
                 {
                     "type": "mesh",
@@ -513,10 +423,11 @@
                     }
                 },
                 {
-                    "type": "enemyControllerPhsx",
-                    "enemyControllerPhsx": {
+                    "type": "enemyControllerPhysX",
+                    "enemyControllerPhysX": {
                         "gameManager": "270"
-                    }
+                    },
+                    "active": false
                 }
             ],
             "scaling": [
@@ -525,8 +436,8 @@
                 1.0
             ],
             "translation": [
-                0.0,
-                4.0,
+                -3.5,
+                6.0,
                 -4.0
             ],
             "rotation": [
@@ -538,14 +449,15 @@
             "parent": "269"
         },
         "266": {
-            "name": "PlayerPhsx",
+            "name": "playerPhysx",
             "components": [
                 {
                     "type": "mesh",
                     "mesh": {
                         "mesh": "12",
                         "material": "22"
-                    }
+                    },
+                    "active": false
                 },
                 {
                     "type": "physx",
@@ -589,7 +501,7 @@
             "translation": [
                 0.0,
                 0.0,
-                0.5
+                5.0
             ],
             "rotation": [
                 0.0,
@@ -2046,57 +1958,6 @@
                 }
             ]
         },
-        "267": {
-            "name": "Bullet",
-            "components": [
-                {
-                    "type": "mesh",
-                    "mesh": {
-                        "mesh": "7",
-                        "material": "26"
-                    }
-                },
-                {
-                    "type": "physx",
-                    "physx": {
-                        "shape": "box",
-                        "box": {
-                            "extents": [
-                                0.025,
-                                0.1,
-                                0.1
-                            ]
-                        },
-                        "gravity": false,
-                        "kinematic": true
-                    }
-                },
-                {
-                    "type": "bullet",
-                    "bullet": {
-                        "player": "266"
-                    },
-                    "active": false
-                }
-            ],
-            "rotation": [
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "scaling": [
-                0.025,
-                0.1,
-                1.0
-            ],
-            "translation": [
-                0.0,
-                2.9,
-                -4.0
-            ],
-            "parent": "269"
-        },
         "268": {
             "name": "enemySpawner",
             "components": [
@@ -2104,8 +1965,12 @@
                     "type": "enemySpawner",
                     "enemySpawner": {
                         "enemyPrefab": "264",
-                        "enemyComponent": "264"
-                    }
+                        "enemyComponent": "264",
+                        "enemy": "264",
+                        "enemyMesh": "7",
+                        "enemyMaterial": "25"
+                    },
+                    "active": true
                 }
             ],
             "parent": "269",
@@ -2184,11 +2049,66 @@
                         "gameManager": "270",
                         "bullet": "267",
                         "playerController": "266",
-                        "player": "266"
+                        "player": "266",
+                        "bulletMash": "7",
+                        "bulletMaterial": "26",
+                        "bulletMesh": "7"
                     },
                     "active": true
                 }
             ]
+        },
+        "267": {
+            "name": "bullet",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "7",
+                        "material": "26"
+                    },
+                    "active": false
+                },
+                {
+                    "type": "bullet",
+                    "bullet": {
+                        "player": "266"
+                    },
+                    "active": false
+                },
+                {
+                    "type": "physx",
+                    "physx": {
+                        "shape": "box",
+                        "box": {
+                            "extents": [
+                                0.025,
+                                0.1,
+                                0.1
+                            ]
+                        },
+                        "gravity": false,
+                        "kinematic": true
+                    }
+                }
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "scaling": [
+                0.025,
+                0.1,
+                1.0
+            ],
+            "translation": [
+                -3.5,
+                2.9,
+                -4.0
+            ],
+            "parent": "269"
         }
     },
     "meshes": {

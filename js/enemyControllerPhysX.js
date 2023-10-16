@@ -1,11 +1,12 @@
-import {Component, Property, PhysXComponent, CollisionEventType} from '@wonderlandengine/api';
+import {Component, Property, CollisionEventType} from '@wonderlandengine/api';
 
 import {GameManager} from './gameManager.js';
+
 /**
- * enemyControllerPhsx
+ * enemyControllerPhysX
  */
-export class EnemyControllerPhsx extends Component {
-    static TypeName = 'enemyControllerPhsx';
+export class EnemyControllerPhysX extends Component {
+    static TypeName = 'enemyControllerPhysX';
     /* Properties that are configurable in the editor */
     static Properties = {
         param: Property.float(1.0),
@@ -15,9 +16,7 @@ export class EnemyControllerPhsx extends Component {
 
     gameManager;
 
-    speed;
-
-    //physXComponent;
+    speed = 0.05;
 
     static onRegister(engine) {
         /* Triggered when this component class is registered.
@@ -32,39 +31,42 @@ export class EnemyControllerPhsx extends Component {
     start() {
         //console.log('start() with param', this.param);
 
-        this.gameManager = this.gameManager.getComponent(GameManager);
-
-        this.speed = 0.03;
-        this.enemyPos = [0, 6.0, -4.0];
-
-        //this.physXComponent = this.object.getComponent(PhysXComponent);
         this.initCollision();
     }
 
     update(dt) {
         /* Called every frame. */
 
-        //this.isMove();
-    }
+        this.enemyPos = this.object.getPositionWorld();
 
-    isMove(){
+        this.object.setPositionWorld([this.enemyPos[0], this.enemyPos[1] - this.speed, this.enemyPos[2]]);
 
-        this.enemyPos[1] -= this.speed; //Down
-        this.object.setPositionWorld(this.enemyPos); //Enemy position setting
+        if(this.enemyPos[1] < -1){
 
-        this.enemyCurrPos = this.object.getPositionWorld(); //Get enemy's current position
-        
-        if(this.enemyCurrPos[1] < -10){
-
-            this.enemyPos[1] = 6.0; //Reset enemy's y.position
-            //this.object.destroy();
+            this.object.destroy();
         }
     }
+
+
+
+    // isMove(){
+
+    //     this.enemyPos[1] -= this.speed; //Down
+    //     this.object.setPositionWorld(this.enemyPos); //Enemy position setting
+
+    //     this.enemyCurrPos = this.object.getPositionWorld(); //Get enemy's current position
+        
+    //     if(this.enemyCurrPos[1] < -10){
+
+    //         this.enemyPos[1] = 6.0; //Reset enemy's y.position
+    //         //this.object.destroy();
+    //     }
+    // }
 
     initCollision(){
         
         this.rigidBody = this.object.getComponent('physx');
-        console.log("RigidBody", this.rigidBody);
+        //console.log("RigidBody", this.rigidBody);
 
         this.rigidBody.onCollision(
 
@@ -76,18 +78,18 @@ export class EnemyControllerPhsx extends Component {
 
                     //console.log("Enemy collision check");
 
-                    if(otherObj.includes("Player")){
+                    if(otherObj.includes("player")){
                         
-                        console.log("Name :", otherObj);
+                        //console.log("Name :", otherObj);
                         //setTimeout(() => {this.object.destroy();}, 1000);
                     }
 
-                    if(otherObj.includes("Bullet")){
+                    if(otherObj.includes("bullet")){
 
-                        this.gameManager.isKill();
+                        //this.gameManager.isKill();
 
                         console.log("Name :", otherObj);
-                        //setTimeout(() => {this.object.destroy();}, 50);
+                        setTimeout(() => {this.object.destroy();}, 50);
                     }
 
                     return;
