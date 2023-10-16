@@ -14923,6 +14923,7 @@ var Bullet = class extends Component {
   init() {
   }
   start() {
+    this.object.name = "bullet";
     this.initCollision();
   }
   update(dt) {
@@ -14940,7 +14941,6 @@ var Bullet = class extends Component {
         if (type === CollisionEventType.Touch) {
           var otherObj = other.object.name;
           if (otherObj.includes("enemy")) {
-            console.log("Name :", otherObj);
             setTimeout(() => {
               this.object.destroy();
             }, 50);
@@ -14969,14 +14969,14 @@ var PlayerController = class extends Component {
   moveDown = false;
   spaceBar = false;
   time = 0;
-  spawnInterval = 0.5;
+  spawnInterval = 0.2;
   static onRegister(engine2) {
   }
   init() {
   }
   start() {
     this.bulletManager = this.bulletManager.getComponent(BulletManager);
-    this.speed = 0.03;
+    this.speed = 0.05;
     this.playerPos = [0, 0, -4];
     this.direction = 1;
     window.addEventListener("keydown", this.press.bind(this));
@@ -14985,32 +14985,34 @@ var PlayerController = class extends Component {
   }
   update(dt) {
     this.isMove();
-    this.Shooting();
     this.time += dt;
-    if (this.time >= this.spawnInterval) {
-      this.time = 0;
+    if (this.spaceBar === true) {
+      if (this.time >= this.spawnInterval) {
+        this.bulletManager.spawnBullet();
+        this.time = 0;
+      }
     }
   }
   press(moving) {
-    if (moving.key === "w")
+    if (moving.key === "w" || moving.key === "ArrowUp")
       this.moveUp = true;
-    if (moving.key === "s")
+    if (moving.key === "s" || moving.key === "ArrowDown")
       this.moveDown = true;
-    if (moving.key === "a")
+    if (moving.key === "a" || moving.key === "ArrowLeft")
       this.moveLeft = true;
-    if (moving.key === "d")
+    if (moving.key === "d" || moving.key === "ArrowRight")
       this.moveRight = true;
     if (moving.code === "Space")
       this.spaceBar = true;
   }
   release(moving) {
-    if (moving.key === "w")
+    if (moving.key === "w" || moving.key === "ArrowUp")
       this.moveUp = false;
-    if (moving.key === "s")
+    if (moving.key === "s" || moving.key === "ArrowDown")
       this.moveDown = false;
-    if (moving.key === "a")
+    if (moving.key === "a" || moving.key === "ArrowLeft")
       this.moveLeft = false;
-    if (moving.key === "d")
+    if (moving.key === "d" || moving.key === "ArrowRight")
       this.moveRight = false;
     if (moving.code === "Space")
       this.spaceBar = false;
@@ -15035,12 +15037,6 @@ var PlayerController = class extends Component {
     }
     this.object.setPositionLocal(this.playerPos);
   }
-  Shooting() {
-    if (this.spaceBar === true) {
-      console.log("spaceBar");
-      this.bulletManager.spawnBullet();
-    }
-  }
   //Check Collision
   initCollision() {
     this.rigidBody = this.object.getComponent("physx");
@@ -15048,7 +15044,10 @@ var PlayerController = class extends Component {
       function(type, other) {
         var otherObj = other.object.name;
         if (type === CollisionEventType.Touch) {
-          if (otherObj.includes("Enemy")) {
+          if (otherObj.includes("enemy")) {
+            setTimeout(() => {
+              this.object.destroy();
+            }, 500);
           }
           return;
         } else {
@@ -15085,7 +15084,7 @@ var BulletManager = class extends Component {
       material: this.bulletMaterial
     });
     obj.scaleLocal([[0.025], [0.1], [0.1]]);
-    obj.setPositionWorld(this.newBulletPos);
+    obj.setPositionWorld([this.newBulletPos[0], this.newBulletPos[1] + 1, this.newBulletPos[2]]);
     obj.addComponent(PhysXComponent, {
       shape: Shape.Box,
       extents: [[0.025], [0.1], [0.1]],
@@ -15191,59 +15190,26 @@ __publicField(ButtonComponent, "Properties", {
   hoverMaterial: Property.material()
 });
 
-// E:/git_CHOIJiho/Wonderland_Shooting/js/gameManager.js
-var GameManager = class extends Component {
-  score;
-  static onRegister(engine2) {
-  }
-  init() {
-  }
-  start() {
-    this.textBox = this.object.getComponent("text");
-    this.textBox.text = " ";
-    this.score = 0;
-  }
-  update(dt) {
-  }
-  isKill() {
-    this.score += 500;
-    this.textBox.text = this.score;
-    return;
-  }
-};
-__publicField(GameManager, "TypeName", "gameManager");
-/* Properties that are configurable in the editor */
-__publicField(GameManager, "Properties", {
-  param: Property.float(1)
-});
-
 // E:/git_CHOIJiho/Wonderland_Shooting/js/enemyControllerPhysX.js
 var EnemyControllerPhysX = class extends Component {
-  gameManager;
-  speed = 0.05;
+  speed = 0.075;
+  time = 0;
   static onRegister(engine2) {
   }
   init() {
   }
   start() {
+    this.object.name = "enemy";
     this.initCollision();
+    this.count = 0;
   }
   update(dt) {
     this.enemyPos = this.object.getPositionWorld();
     this.object.setPositionWorld([this.enemyPos[0], this.enemyPos[1] - this.speed, this.enemyPos[2]]);
-    if (this.enemyPos[1] < -1) {
+    if (this.enemyPos[1] < -2) {
       this.object.destroy();
     }
   }
-  // isMove(){
-  //     this.enemyPos[1] -= this.speed; //Down
-  //     this.object.setPositionWorld(this.enemyPos); //Enemy position setting
-  //     this.enemyCurrPos = this.object.getPositionWorld(); //Get enemy's current position
-  //     if(this.enemyCurrPos[1] < -10){
-  //         this.enemyPos[1] = 6.0; //Reset enemy's y.position
-  //         //this.object.destroy();
-  //     }
-  // }
   initCollision() {
     this.rigidBody = this.object.getComponent("physx");
     this.rigidBody.onCollision(
@@ -15251,9 +15217,12 @@ var EnemyControllerPhysX = class extends Component {
         if (type === CollisionEventType.Touch) {
           var otherObj = other.object.name;
           if (otherObj.includes("player")) {
+            setTimeout(() => {
+              this.object.destroy();
+            }, 500);
           }
           if (otherObj.includes("bullet")) {
-            console.log("Name :", otherObj);
+            this.count++;
             setTimeout(() => {
               this.object.destroy();
             }, 50);
@@ -15269,14 +15238,13 @@ var EnemyControllerPhysX = class extends Component {
 __publicField(EnemyControllerPhysX, "TypeName", "enemyControllerPhysX");
 /* Properties that are configurable in the editor */
 __publicField(EnemyControllerPhysX, "Properties", {
-  param: Property.float(1),
-  gameManager: Property.object()
+  param: Property.float(1)
 });
 
 // E:/git_CHOIJiho/Wonderland_Shooting/js/enemySpawner.js
 var EnemySpawner = class extends Component {
   time = 0;
-  spawnInterval = 2;
+  spawnInterval = 1;
   max = 2.25;
   change = true;
   static onRegister(engine2) {
@@ -15288,8 +15256,7 @@ var EnemySpawner = class extends Component {
   }
   update(dt) {
     this.time += dt;
-    this.timeRound = Math.round(this.time);
-    if (this.timeRound >= this.spawnInterval) {
+    if (this.time >= this.spawnInterval) {
       this.time = 0;
       this.change = !this.change;
       this.isEnemySpawn();
@@ -15314,7 +15281,7 @@ var EnemySpawner = class extends Component {
     newEnemy.setPositionWorld(this.newEnemyPos);
     newEnemy.addComponent(PhysXComponent, {
       shape: Shape.Box,
-      extents: [[0.025], [0.1], [0.1]],
+      extents: [[0.15], [0.15], [0.1]],
       // groupsMask: (1 << 4) | (1 << 5) | (1 << 6) | (1 << 3),
       // blocksMask: (1 << 4) | (1 << 5) | (1 << 6) | (1 << 3),
       allowSimulation: true,
@@ -15335,6 +15302,32 @@ __publicField(EnemySpawner, "Properties", {
   enemy: Property.object(),
   enemyMesh: Property.mesh(),
   enemyMaterial: Property.material()
+});
+
+// E:/git_CHOIJiho/Wonderland_Shooting/js/gameManager.js
+var GameManager = class extends Component {
+  score;
+  static onRegister(engine2) {
+  }
+  init() {
+  }
+  start() {
+    this.textBox = this.object.getComponent("text");
+    this.textBox.text = " ";
+    this.score = 0;
+  }
+  update(dt) {
+  }
+  isKill() {
+    this.score += 500;
+    this.textBox.text = this.score;
+    return;
+  }
+};
+__publicField(GameManager, "TypeName", "gameManager");
+/* Properties that are configurable in the editor */
+__publicField(GameManager, "Properties", {
+  param: Property.float(1)
 });
 
 // E:/git_CHOIJiho/Wonderland_Shooting/js/index.js

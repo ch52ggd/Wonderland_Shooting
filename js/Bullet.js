@@ -27,6 +27,8 @@ export class Bullet extends Component {
     start() {
         //console.log('start() with param', this.param);
 
+        this.object.name = "bullet";
+
         this.initCollision();
     }
 
@@ -57,12 +59,12 @@ export class Bullet extends Component {
                 if(type === CollisionEventType.Touch){
 
                     var otherObj = other.object.name;
-                    //console.log(otherObj);
+
                     if(otherObj.includes("enemy")){
 
-                        console.log("Name :", otherObj);
                         setTimeout(() => {this.object.destroy();}, 50);
                     }
+                    
                     return;
                 }
                 else{

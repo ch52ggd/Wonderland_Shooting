@@ -23,7 +23,7 @@ export class PlayerController extends Component {
     spaceBar = false;
 
     time = 0;
-    spawnInterval = 0.5;
+    spawnInterval = 0.2;
 
     static onRegister(engine) {
         /* Triggered when this component class is registered.
@@ -41,7 +41,7 @@ export class PlayerController extends Component {
 
         this.bulletManager = this.bulletManager.getComponent(BulletManager);
 
-        this.speed = 0.03;
+        this.speed = 0.05;
         this.playerPos = [0, 0, -4];
 
         this.direction = 1;
@@ -56,37 +56,38 @@ export class PlayerController extends Component {
         /* Called every frame. */
 
         this.isMove();
-        this.Shooting();
         
 
 
         //Bullet shooting interval control
         this.time += dt;
-        //this.timeRound = Math.round(this.time);
-        //console.log(this.timeRound);
 
-        if(this.time >= this.spawnInterval){    
-            
-            this.time = 0;
+        if(this.spaceBar === true){
+
+            if(this.time >= this.spawnInterval){
+
+                this.bulletManager.spawnBullet();
+                this.time = 0;
+            }
         }
     }
 
     press(moving){
 
-        if(moving.key === 'w') this.moveUp = true; //up
-        if(moving.key === 's') this.moveDown = true; //Down
-        if(moving.key === 'a') this.moveLeft = true; //Left
-        if(moving.key === 'd') this.moveRight = true; //Right
+        if(moving.key === 'w' || moving.key === "ArrowUp") this.moveUp = true; //up
+        if(moving.key === 's' || moving.key === "ArrowDown") this.moveDown = true; //Down
+        if(moving.key === 'a' || moving.key === "ArrowLeft") this.moveLeft = true; //Left
+        if(moving.key === 'd' || moving.key === "ArrowRight") this.moveRight = true; //Right
 
         if(moving.code === "Space") this.spaceBar = true;
     }
 
     release(moving){
 
-        if(moving.key === 'w') this.moveUp = false; //up
-        if(moving.key === 's') this.moveDown = false; //Down
-        if(moving.key === 'a') this.moveLeft = false; //Left
-        if(moving.key === 'd') this.moveRight = false; //Right
+        if(moving.key === 'w' || moving.key === "ArrowUp") this.moveUp = false; //up
+        if(moving.key === 's' || moving.key === "ArrowDown") this.moveDown = false; //Down
+        if(moving.key === 'a' || moving.key === "ArrowLeft") this.moveLeft = false; //Left
+        if(moving.key === 'd' || moving.key === "ArrowRight") this.moveRight = false; //Right
 
         if(moving.code === "Space") this.spaceBar = false;
     }
@@ -122,17 +123,6 @@ export class PlayerController extends Component {
 
 
 
-    Shooting(){
-
-        if(this.spaceBar === true){
-            console.log("spaceBar");
-
-            this.bulletManager.spawnBullet();
-        }
-    }
-
-
-
     //Check Collision
     initCollision(){
         
@@ -147,12 +137,9 @@ export class PlayerController extends Component {
 
                 if(type === CollisionEventType.Touch){
 
-                    //console.log("Player collision check");
-
-                    if(otherObj.includes("Enemy")){
+                    if(otherObj.includes("enemy")){
                         
-                        //console.log("Name :", otherObj);
-                        //setTimeout(() => {this.object.destroy();}, 1000);
+                        setTimeout(() => {this.object.destroy();}, 500);
                     }
 
                     return;

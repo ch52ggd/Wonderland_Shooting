@@ -1,6 +1,6 @@
 import {Component, Property, CollisionEventType} from '@wonderlandengine/api';
 
-import {GameManager} from './gameManager.js';
+//import {GameManager} from './gameManager.js';
 
 /**
  * enemyControllerPhysX
@@ -9,14 +9,12 @@ export class EnemyControllerPhysX extends Component {
     static TypeName = 'enemyControllerPhysX';
     /* Properties that are configurable in the editor */
     static Properties = {
-        param: Property.float(1.0),
-
-        gameManager: Property.object()
+        param: Property.float(1.0)
     };
 
-    gameManager;
+    speed = 0.075;
 
-    speed = 0.05;
+    time = 0;
 
     static onRegister(engine) {
         /* Triggered when this component class is registered.
@@ -31,7 +29,13 @@ export class EnemyControllerPhysX extends Component {
     start() {
         //console.log('start() with param', this.param);
 
+        //this.gameManager = this.game.getComponent(GameManager);
+
+        this.object.name = "enemy";
+
         this.initCollision();
+
+        this.count = 0;
     }
 
     update(dt) {
@@ -41,7 +45,7 @@ export class EnemyControllerPhysX extends Component {
 
         this.object.setPositionWorld([this.enemyPos[0], this.enemyPos[1] - this.speed, this.enemyPos[2]]);
 
-        if(this.enemyPos[1] < -1){
+        if(this.enemyPos[1] < -2){
 
             this.object.destroy();
         }
@@ -49,24 +53,9 @@ export class EnemyControllerPhysX extends Component {
 
 
 
-    // isMove(){
-
-    //     this.enemyPos[1] -= this.speed; //Down
-    //     this.object.setPositionWorld(this.enemyPos); //Enemy position setting
-
-    //     this.enemyCurrPos = this.object.getPositionWorld(); //Get enemy's current position
-        
-    //     if(this.enemyCurrPos[1] < -10){
-
-    //         this.enemyPos[1] = 6.0; //Reset enemy's y.position
-    //         //this.object.destroy();
-    //     }
-    // }
-
     initCollision(){
         
         this.rigidBody = this.object.getComponent('physx');
-        //console.log("RigidBody", this.rigidBody);
 
         this.rigidBody.onCollision(
 
@@ -76,19 +65,14 @@ export class EnemyControllerPhysX extends Component {
 
                     var otherObj = other.object.name;
 
-                    //console.log("Enemy collision check");
-
                     if(otherObj.includes("player")){
                         
-                        //console.log("Name :", otherObj);
-                        //setTimeout(() => {this.object.destroy();}, 1000);
+                        setTimeout(() => {this.object.destroy();}, 500);
                     }
 
                     if(otherObj.includes("bullet")){
 
-                        //this.gameManager.isKill();
-
-                        console.log("Name :", otherObj);
+                        this.count++;
                         setTimeout(() => {this.object.destroy();}, 50);
                     }
 

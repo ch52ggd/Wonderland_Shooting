@@ -18,7 +18,7 @@ export class EnemySpawner extends Component {
     };
 
     time = 0;
-    spawnInterval = 2;
+    spawnInterval = 1.0;
 
     max = 2.25;
 
@@ -45,10 +45,10 @@ export class EnemySpawner extends Component {
 
         //Enemy spawn interval control
         this.time += dt;
-        this.timeRound = Math.round(this.time);
+        //this.timeRound = Math.round(this.time);
         //console.log(this.timeRound);
 
-        if(this.timeRound >= this.spawnInterval){
+        if(this.time >= this.spawnInterval){
 
             this.time = 0;
             this.change = !this.change;
@@ -90,7 +90,7 @@ export class EnemySpawner extends Component {
 
         newEnemy.addComponent(PhysXComponent, {
             shape: Shape.Box,
-            extents: [[0.025], [0.1], [0.1]],
+            extents: [[0.15], [0.15], [0.1]],
             // groupsMask: (1 << 4) | (1 << 5) | (1 << 6) | (1 << 3),
             // blocksMask: (1 << 4) | (1 << 5) | (1 << 6) | (1 << 3),
 

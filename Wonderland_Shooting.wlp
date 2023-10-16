@@ -425,7 +425,8 @@
                 {
                     "type": "enemyControllerPhysX",
                     "enemyControllerPhysX": {
-                        "gameManager": "270"
+                        "gameManager": "270",
+                        "game": "270"
                     },
                     "active": false
                 }
@@ -2072,7 +2073,8 @@
                 {
                     "type": "bullet",
                     "bullet": {
-                        "player": "266"
+                        "player": "266",
+                        "game": "270"
                     },
                     "active": false
                 },

@@ -54,7 +54,7 @@ export class BulletManager extends Component {
 
         obj.scaleLocal([[0.025], [0.1], [0.1]]);
 
-        obj.setPositionWorld(this.newBulletPos);
+        obj.setPositionWorld([this.newBulletPos[0], this.newBulletPos[1] + 1, this.newBulletPos[2]]);
 
         obj.addComponent(PhysXComponent, {
             shape: Shape.Box,
