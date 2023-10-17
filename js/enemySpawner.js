@@ -1,6 +1,8 @@
 import {Component, Property, PhysXComponent, Shape} from '@wonderlandengine/api';
 
 import {EnemyControllerPhysX} from './enemyControllerPhysX.js';
+import {GameManager} from './gameManager.js';
+import {PlayerController} from './playerController.js';
 
 /**
  * enemySpawner
@@ -14,11 +16,17 @@ export class EnemySpawner extends Component {
         enemy: Property.object(),
 
         enemyMesh: Property.mesh(),
-        enemyMaterial: Property.material()
+        enemyMaterial: Property.material(),
+
+        gameManager: Property.object(),
+
+        playerController: Property.object()
     };
 
     time = 0;
     spawnInterval = 1.0;
+
+    upgrade = 0;
 
     max = 2.25;
 
@@ -38,21 +46,38 @@ export class EnemySpawner extends Component {
         //console.log('start() with param', this.param);
 
         this.enemyComponent = this.enemy.getComponent(EnemyControllerPhysX);
+        this.gameManager = this.gameManager.getComponent(GameManager);
+        this.playerController = this.playerController.getComponent(PlayerController);
     }
 
     update(dt) {
         /* Called every frame. */
 
-        //Enemy spawn interval control
         this.time += dt;
-        //this.timeRound = Math.round(this.time);
-        //console.log(this.timeRound);
 
-        if(this.time >= this.spawnInterval){
+        if(this.gameManager.isPlay === true){
 
-            this.time = 0;
-            this.change = !this.change;
-            this.isEnemySpawn();
+            //Enemy spawn interval control
+            if(this.time >= this.spawnInterval){
+
+                this.time = 0;
+                this.change = !this.change;
+                this.isEnemySpawn();
+            }
+
+            this.upgrade += dt;
+            this.upgradeRound = Math.round(this.upgrade);
+
+            if(this.upgradeRound >= 10){
+
+                this.enemyComponent.speed = 0.15;
+                this.spawnInterval = 0.5;
+            }
+        }
+
+        if(this.gameManager.isPlay === false){
+
+            this.upgrade = 0;
         }
     }
 
@@ -104,5 +129,7 @@ export class EnemySpawner extends Component {
         });
 
         newEnemy.addComponent(EnemyControllerPhysX);
+
+        newEnemy.getComponent(EnemyControllerPhysX).gameManager = this.gameManager;
     }
 }

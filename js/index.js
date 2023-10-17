@@ -23,11 +23,12 @@ import {TeleportComponent} from '@wonderlandengine/components';
 import {VrModeActiveSwitch} from '@wonderlandengine/components';
 import {Bullet} from './bullet.js';
 import {BulletManager} from './bulletManager.js';
-import {ButtonComponent} from './button.js';
+import {ButtonCustom} from './buttonCustom.js';
 import {EnemyControllerPhysX} from './enemyControllerPhysX.js';
 import {EnemySpawner} from './enemySpawner.js';
 import {GameManager} from './gameManager.js';
 import {PlayerController} from './playerController.js';
+import {TextManager} from './textManager.js';
 /* wle:auto-imports:end */
 
 import {loadRuntime} from '@wonderlandengine/api';
@@ -97,11 +98,12 @@ engine.registerComponent(TeleportComponent);
 engine.registerComponent(VrModeActiveSwitch);
 engine.registerComponent(Bullet);
 engine.registerComponent(BulletManager);
-engine.registerComponent(ButtonComponent);
+engine.registerComponent(ButtonCustom);
 engine.registerComponent(EnemyControllerPhysX);
 engine.registerComponent(EnemySpawner);
 engine.registerComponent(GameManager);
 engine.registerComponent(PlayerController);
+engine.registerComponent(TextManager);
 /* wle:auto-register:end */
 
 engine.scene.load(`${Constants.ProjectName}.bin`).catch((e) => {

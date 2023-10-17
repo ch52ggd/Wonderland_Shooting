@@ -12,6 +12,8 @@ export class GameManager extends Component {
 
     score;
 
+    isPlay;
+
     static onRegister(engine) {
         /* Triggered when this component class is registered.
          * You can for instance register extra component types here
@@ -24,11 +26,10 @@ export class GameManager extends Component {
 
     start() {
         //console.log('start() with param', this.param);
-
-        this.textBox = this.object.getComponent('text');
-        this.textBox.text = " ";
-
+        
         this.score = 0;
+
+        this.isPlay = false;
     }
 
     update(dt) {
@@ -40,7 +41,7 @@ export class GameManager extends Component {
     isKill(){
 
         this.score += 500;
-        this.textBox.text = this.score;
+        //this.textBox.text = this.score;
         return;
     }
 }

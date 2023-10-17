@@ -1,6 +1,7 @@
 import {Component, Property, CollisionEventType} from '@wonderlandengine/api';
 
 import {BulletManager} from './bulletManager.js';
+import {GameManager} from './gameManager.js';
 
 /**
  * playerController
@@ -11,7 +12,8 @@ export class PlayerController extends Component {
     static Properties = {
         param: Property.float(1.0),
 
-        bulletManager: Property.object()
+        bulletManager: Property.object(),
+        gameManager: Property.object()
     };
 
     speed;
@@ -24,6 +26,8 @@ export class PlayerController extends Component {
 
     time = 0;
     spawnInterval = 0.2;
+
+    isDie = false;
 
     static onRegister(engine) {
         /* Triggered when this component class is registered.
@@ -41,6 +45,8 @@ export class PlayerController extends Component {
 
         this.bulletManager = this.bulletManager.getComponent(BulletManager);
 
+        this.gameManager = this.gameManager.getComponent(GameManager);
+
         this.speed = 0.05;
         this.playerPos = [0, 0, -4];
 
@@ -55,20 +61,25 @@ export class PlayerController extends Component {
     update(dt) {
         /* Called every frame. */
 
-        this.isMove();
-        
-
-
-        //Bullet shooting interval control
         this.time += dt;
 
-        if(this.spaceBar === true){
+        if(this.gameManager.isPlay === true){
 
-            if(this.time >= this.spawnInterval){
+            this.isMove();
 
-                this.bulletManager.spawnBullet();
-                this.time = 0;
+            //Bullet shooting interval control
+            if(this.spaceBar === true){
+
+                if(this.time >= this.spawnInterval){
+
+                    this.bulletManager.spawnBullet();
+                    this.time = 0;
+                }
             }
+        }
+        if(this.gameManager.isPlay === false){
+
+            return;
         }
     }
 
@@ -91,6 +102,8 @@ export class PlayerController extends Component {
 
         if(moving.code === "Space") this.spaceBar = false;
     }
+
+
 
     isMove(){
 
@@ -123,6 +136,14 @@ export class PlayerController extends Component {
 
 
 
+    isReset(){
+
+        this.playerPos = [0, 0, -4];
+        this.playerCurrPos = [0, 0, -4];
+    }
+
+
+
     //Check Collision
     initCollision(){
         
@@ -139,7 +160,12 @@ export class PlayerController extends Component {
 
                     if(otherObj.includes("enemy")){
                         
-                        setTimeout(() => {this.object.destroy();}, 500);
+                        //setTimeout(() => {this.object.destroy();}, 500);
+                        this.gameManager.isPlay = false;
+
+                        this.gameManager.score = 0;
+
+                        this.isDie = true;
                     }
 
                     return;

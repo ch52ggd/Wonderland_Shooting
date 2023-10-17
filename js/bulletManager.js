@@ -12,7 +12,7 @@ export class BulletManager extends Component {
     static Properties = {
         param: Property.float(1.0),
 
-        player: Property.object(),
+        playerController: Property.object(),
         bullet: Property.object(),
 
         bulletMesh: Property.mesh(),
@@ -32,8 +32,8 @@ export class BulletManager extends Component {
     start() {
         //console.log('start() with param', this.param);
 
-        this.playerComponent = this.player.getComponent(PlayerController);
-        this.bulletComponent = this.bullet.getComponent(Bullet);
+        this.playerController = this.playerController.getComponent(PlayerController);
+        this.bullet = this.bullet.getComponent(Bullet);
 
     }
 
@@ -43,7 +43,7 @@ export class BulletManager extends Component {
 
     spawnBullet(){
 
-        this.newBulletPos = this.playerComponent.playerCurrPos
+        this.newBulletPos = this.playerController.playerCurrPos
 
         var obj = this.engine.scene.addObject(null);
 
@@ -54,7 +54,7 @@ export class BulletManager extends Component {
 
         obj.scaleLocal([[0.025], [0.1], [0.1]]);
 
-        obj.setPositionWorld([this.newBulletPos[0], this.newBulletPos[1] + 1, this.newBulletPos[2]]);
+        obj.setPositionWorld([this.newBulletPos[0], this.newBulletPos[1], this.newBulletPos[2]]);
 
         obj.addComponent(PhysXComponent, {
             shape: Shape.Box,

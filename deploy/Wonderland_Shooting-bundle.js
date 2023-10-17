@@ -14960,6 +14960,31 @@ __publicField(Bullet, "Properties", {
   player: Property.object()
 });
 
+// E:/git_CHOIJiho/Wonderland_Shooting/js/gameManager.js
+var GameManager = class extends Component {
+  score;
+  isPlay;
+  static onRegister(engine2) {
+  }
+  init() {
+  }
+  start() {
+    this.score = 0;
+    this.isPlay = false;
+  }
+  update(dt) {
+  }
+  isKill() {
+    this.score += 500;
+    return;
+  }
+};
+__publicField(GameManager, "TypeName", "gameManager");
+/* Properties that are configurable in the editor */
+__publicField(GameManager, "Properties", {
+  param: Property.float(1)
+});
+
 // E:/git_CHOIJiho/Wonderland_Shooting/js/playerController.js
 var PlayerController = class extends Component {
   speed;
@@ -14970,12 +14995,14 @@ var PlayerController = class extends Component {
   spaceBar = false;
   time = 0;
   spawnInterval = 0.2;
+  isDie = false;
   static onRegister(engine2) {
   }
   init() {
   }
   start() {
     this.bulletManager = this.bulletManager.getComponent(BulletManager);
+    this.gameManager = this.gameManager.getComponent(GameManager);
     this.speed = 0.05;
     this.playerPos = [0, 0, -4];
     this.direction = 1;
@@ -14984,13 +15011,18 @@ var PlayerController = class extends Component {
     this.initCollision();
   }
   update(dt) {
-    this.isMove();
     this.time += dt;
-    if (this.spaceBar === true) {
-      if (this.time >= this.spawnInterval) {
-        this.bulletManager.spawnBullet();
-        this.time = 0;
+    if (this.gameManager.isPlay === true) {
+      this.isMove();
+      if (this.spaceBar === true) {
+        if (this.time >= this.spawnInterval) {
+          this.bulletManager.spawnBullet();
+          this.time = 0;
+        }
       }
+    }
+    if (this.gameManager.isPlay === false) {
+      return;
     }
   }
   press(moving) {
@@ -15037,6 +15069,10 @@ var PlayerController = class extends Component {
     }
     this.object.setPositionLocal(this.playerPos);
   }
+  isReset() {
+    this.playerPos = [0, 0, -4];
+    this.playerCurrPos = [0, 0, -4];
+  }
   //Check Collision
   initCollision() {
     this.rigidBody = this.object.getComponent("physx");
@@ -15045,9 +15081,9 @@ var PlayerController = class extends Component {
         var otherObj = other.object.name;
         if (type === CollisionEventType.Touch) {
           if (otherObj.includes("enemy")) {
-            setTimeout(() => {
-              this.object.destroy();
-            }, 500);
+            this.gameManager.isPlay = false;
+            this.gameManager.score = 0;
+            this.isDie = true;
           }
           return;
         } else {
@@ -15061,7 +15097,8 @@ __publicField(PlayerController, "TypeName", "playerController");
 /* Properties that are configurable in the editor */
 __publicField(PlayerController, "Properties", {
   param: Property.float(1),
-  bulletManager: Property.object()
+  bulletManager: Property.object(),
+  gameManager: Property.object()
 });
 
 // E:/git_CHOIJiho/Wonderland_Shooting/js/bulletManager.js
@@ -15071,20 +15108,20 @@ var BulletManager = class extends Component {
   init() {
   }
   start() {
-    this.playerComponent = this.player.getComponent(PlayerController);
-    this.bulletComponent = this.bullet.getComponent(Bullet);
+    this.playerController = this.playerController.getComponent(PlayerController);
+    this.bullet = this.bullet.getComponent(Bullet);
   }
   update(dt) {
   }
   spawnBullet() {
-    this.newBulletPos = this.playerComponent.playerCurrPos;
+    this.newBulletPos = this.playerController.playerCurrPos;
     var obj = this.engine.scene.addObject(null);
     obj.addComponent("mesh", {
       mesh: this.bulletMesh,
       material: this.bulletMaterial
     });
     obj.scaleLocal([[0.025], [0.1], [0.1]]);
-    obj.setPositionWorld([this.newBulletPos[0], this.newBulletPos[1] + 1, this.newBulletPos[2]]);
+    obj.setPositionWorld([this.newBulletPos[0], this.newBulletPos[1], this.newBulletPos[2]]);
     obj.addComponent(PhysXComponent, {
       shape: Shape.Box,
       extents: [[0.025], [0.1], [0.1]],
@@ -15105,13 +15142,13 @@ __publicField(BulletManager, "TypeName", "bulletManager");
 /* Properties that are configurable in the editor */
 __publicField(BulletManager, "Properties", {
   param: Property.float(1),
-  player: Property.object(),
+  playerController: Property.object(),
   bullet: Property.object(),
   bulletMesh: Property.mesh(),
   bulletMaterial: Property.material()
 });
 
-// E:/git_CHOIJiho/Wonderland_Shooting/js/button.js
+// E:/git_CHOIJiho/Wonderland_Shooting/js/buttonCustom.js
 function hapticFeedback(object, strength, duration) {
   const input = object.getComponent(InputComponent);
   if (input && input.xrInputSource) {
@@ -15120,7 +15157,7 @@ function hapticFeedback(object, strength, duration) {
       gamepad.hapticActuators[0].pulse(strength, duration);
   }
 }
-var ButtonComponent = class extends Component {
+var ButtonCustom = class extends Component {
   static onRegister(engine2) {
     engine2.registerComponent(HowlerAudioSource);
     engine2.registerComponent(CursorTarget);
@@ -15140,6 +15177,8 @@ var ButtonComponent = class extends Component {
       src: "sfx/unclick.wav",
       spatial: true
     });
+    this.gameManager = this.gameManager.getComponent(GameManager);
+    this.playerController = this.playerController.getComponent(PlayerController);
   }
   onActivate() {
     this.target.onHover.add(this.onHover);
@@ -15166,6 +15205,8 @@ var ButtonComponent = class extends Component {
     this.soundClick.play();
     this.buttonMeshObject.translate([0, -0.1, 0]);
     hapticFeedback(cursor.object, 1, 20);
+    this.gameManager.isPlay = !this.gameManager.isPlay;
+    this.playerController.isReset();
   };
   /* Called by 'cursor-target' */
   onUp = (_, cursor) => {
@@ -15182,18 +15223,20 @@ var ButtonComponent = class extends Component {
     hapticFeedback(cursor.object, 0.3, 50);
   };
 };
-__publicField(ButtonComponent, "TypeName", "button");
-__publicField(ButtonComponent, "Properties", {
+__publicField(ButtonCustom, "TypeName", "buttonCustom");
+/* Properties that are configurable in the editor */
+__publicField(ButtonCustom, "Properties", {
   /** Object that has the button's mesh attached */
   buttonMeshObject: Property.object(),
   /** Material to apply when the user hovers the button */
-  hoverMaterial: Property.material()
+  hoverMaterial: Property.material(),
+  gameManager: Property.object(),
+  playerController: Property.object()
 });
 
 // E:/git_CHOIJiho/Wonderland_Shooting/js/enemyControllerPhysX.js
 var EnemyControllerPhysX = class extends Component {
   speed = 0.075;
-  time = 0;
   static onRegister(engine2) {
   }
   init() {
@@ -15201,7 +15244,6 @@ var EnemyControllerPhysX = class extends Component {
   start() {
     this.object.name = "enemy";
     this.initCollision();
-    this.count = 0;
   }
   update(dt) {
     this.enemyPos = this.object.getPositionWorld();
@@ -15222,7 +15264,7 @@ var EnemyControllerPhysX = class extends Component {
             }, 500);
           }
           if (otherObj.includes("bullet")) {
-            this.count++;
+            this.gameManager.isKill();
             setTimeout(() => {
               this.object.destroy();
             }, 50);
@@ -15237,14 +15279,13 @@ var EnemyControllerPhysX = class extends Component {
 };
 __publicField(EnemyControllerPhysX, "TypeName", "enemyControllerPhysX");
 /* Properties that are configurable in the editor */
-__publicField(EnemyControllerPhysX, "Properties", {
-  param: Property.float(1)
-});
+__publicField(EnemyControllerPhysX, "Properties", {});
 
 // E:/git_CHOIJiho/Wonderland_Shooting/js/enemySpawner.js
 var EnemySpawner = class extends Component {
   time = 0;
   spawnInterval = 1;
+  upgrade = 0;
   max = 2.25;
   change = true;
   static onRegister(engine2) {
@@ -15253,13 +15294,26 @@ var EnemySpawner = class extends Component {
   }
   start() {
     this.enemyComponent = this.enemy.getComponent(EnemyControllerPhysX);
+    this.gameManager = this.gameManager.getComponent(GameManager);
+    this.playerController = this.playerController.getComponent(PlayerController);
   }
   update(dt) {
     this.time += dt;
-    if (this.time >= this.spawnInterval) {
-      this.time = 0;
-      this.change = !this.change;
-      this.isEnemySpawn();
+    if (this.gameManager.isPlay === true) {
+      if (this.time >= this.spawnInterval) {
+        this.time = 0;
+        this.change = !this.change;
+        this.isEnemySpawn();
+      }
+      this.upgrade += dt;
+      this.upgradeRound = Math.round(this.upgrade);
+      if (this.upgradeRound >= 10) {
+        this.enemyComponent.speed = 0.15;
+        this.spawnInterval = 0.5;
+      }
+    }
+    if (this.gameManager.isPlay === false) {
+      this.upgrade = 0;
     }
   }
   isEnemySpawn() {
@@ -15293,6 +15347,7 @@ var EnemySpawner = class extends Component {
       kinematic: true
     });
     newEnemy.addComponent(EnemyControllerPhysX);
+    newEnemy.getComponent(EnemyControllerPhysX).gameManager = this.gameManager;
   }
 };
 __publicField(EnemySpawner, "TypeName", "enemySpawner");
@@ -15301,33 +15356,60 @@ __publicField(EnemySpawner, "Properties", {
   param: Property.float(1),
   enemy: Property.object(),
   enemyMesh: Property.mesh(),
-  enemyMaterial: Property.material()
+  enemyMaterial: Property.material(),
+  gameManager: Property.object(),
+  playerController: Property.object()
 });
 
-// E:/git_CHOIJiho/Wonderland_Shooting/js/gameManager.js
-var GameManager = class extends Component {
-  score;
+// E:/git_CHOIJiho/Wonderland_Shooting/js/textManager.js
+var TextManager = class extends Component {
   static onRegister(engine2) {
   }
   init() {
   }
   start() {
-    this.textBox = this.object.getComponent("text");
-    this.textBox.text = " ";
-    this.score = 0;
+    this.gameManager = this.gameManager.getComponent(GameManager);
+    this.playerController = this.playerController.getComponent(PlayerController);
+    this.titleText = this.titleText.getComponent("text");
+    this.scoreText = this.scoreText.getComponent("text");
+    this.startText = this.startText.getComponent("text");
+    this.resultText = this.resultText.getComponent("text");
+    this.titleText.text = "Shooting Game";
+    this.scoreText.text = "Shooting Game";
+    this.startText.text = "Game Start";
+    this.resultText.text = " ";
   }
   update(dt) {
+    this.isChangeText();
   }
-  isKill() {
-    this.score += 500;
-    this.textBox.text = this.score;
-    return;
+  isChangeText() {
+    if (this.gameManager.isPlay === true) {
+      this.titleText.text = "Shooting Game";
+      this.startText.text = "Start Game";
+      this.resultText.text = " ";
+      this.newScore = this.gameManager.score;
+      this.scoreText.text = this.newScore;
+    }
+    if (this.gameManager.isPlay === false) {
+      if (this.playerController.isDie === true) {
+        this.titleText.text = "Game Over";
+        this.startText.text = "Restart Game";
+        this.resultText.text = "You got " + this.newScore + " score";
+        this.scoreText.text = " ";
+      }
+    }
   }
 };
-__publicField(GameManager, "TypeName", "gameManager");
+__publicField(TextManager, "TypeName", "textManager");
 /* Properties that are configurable in the editor */
-__publicField(GameManager, "Properties", {
-  param: Property.float(1)
+__publicField(TextManager, "Properties", {
+  //param: Property.float(1.0),
+  gameManager: Property.object(),
+  playerController: Property.object(),
+  titleText: Property.object(),
+  scoreText: Property.object(),
+  startText: Property.object(),
+  resultText: Property.object()
 });
 
 // E:/git_CHOIJiho/Wonderland_Shooting/js/index.js
@@ -15382,11 +15464,12 @@ engine.registerComponent(TeleportComponent);
 engine.registerComponent(VrModeActiveSwitch);
 engine.registerComponent(Bullet);
 engine.registerComponent(BulletManager);
-engine.registerComponent(ButtonComponent);
+engine.registerComponent(ButtonCustom);
 engine.registerComponent(EnemyControllerPhysX);
 engine.registerComponent(EnemySpawner);
 engine.registerComponent(GameManager);
 engine.registerComponent(PlayerController);
+engine.registerComponent(TextManager);
 engine.scene.load(`${Constants.ProjectName}.bin`).catch((e) => {
   console.error(e);
   window.alert(`Failed to load ${Constants.ProjectName}.bin:`, e);

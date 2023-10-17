@@ -131,32 +131,34 @@
             ]
         },
         "194": {
-            "name": "Panel",
+            "name": "gameStartPanel",
             "components": [
                 {
                     "type": "mesh",
                     "mesh": {
                         "mesh": "195",
                         "material": "202"
-                    }
+                    },
+                    "active": true
                 }
             ],
             "translation": [
-                -2.5,
-                1.2,
-                0.0
+                4.5,
+                4.4999995,
+                -3.9999971
             ],
             "rotation": [
-                0.5002117,
+                0.7071068,
                 0.0,
                 0.0,
-                0.8659031
+                0.7071067
             ],
             "scaling": [
-                0.25,
-                0.1249998,
-                0.2499998
-            ]
+                2.0,
+                0.2499963,
+                1.9999707
+            ],
+            "parent": "269"
         },
         "196": {
             "link": {
@@ -173,20 +175,20 @@
             ],
             "name": "ButtonMesh",
             "translation": [
-                -0.0000094,
-                0.3244419,
-                -0.0000676
+                -0.0000093,
+                0.4998973,
+                0.5
             ],
             "rotation": [
-                6.000006465001206e-7,
+                6.000007033435395e-7,
                 0.0,
                 0.0,
                 1.0
             ],
             "scaling": [
                 1.0,
-                0.9999989,
-                0.9999989
+                1.5,
+                1.0
             ]
         },
         "197": {
@@ -199,22 +201,46 @@
                         "collider": "box",
                         "box": {
                             "extents": [
-                                0.0974999,
+                                0.7969999,
                                 0.025,
-                                0.045
+                                0.545
                             ]
                         },
                         "groups": 251
-                    }
+                    },
+                    "active": false
                 },
                 {
                     "type": "cursor-target"
                 },
                 {
-                    "type": "button",
-                    "button": {
+                    "type": "buttonCustom",
+                    "buttonCustom": {
                         "buttonMeshObject": "196",
-                        "hoverMaterial": "203"
+                        "hoverMaterial": "203",
+                        "gameManager": "270",
+                        "playerController": "266"
+                    }
+                },
+                {
+                    "type": "physx",
+                    "physx": {
+                        "trigger": true,
+                        "allowSimulation": false,
+                        "gravity": false,
+                        "shape": "box",
+                        "translationOffset": [
+                            0.0,
+                            0.0,
+                            0.3
+                        ],
+                        "box": {
+                            "extents": [
+                                0.8,
+                                0.25,
+                                0.3499999
+                            ]
+                        }
                     }
                 }
             ],
@@ -238,29 +264,30 @@
         "198": {
             "name": "ButtonLabel",
             "parent": "196",
+            "translation": [
+                -0.0001563,
+                0.15,
+                0.0000046
+            ],
+            "rotation": [
+                -0.7071068,
+                0.0,
+                0.0,
+                0.7071068
+            ],
+            "scaling": [
+                2.5,
+                10.0,
+                5.0
+            ],
             "components": [
                 {
                     "type": "text",
                     "text": {
-                        "text": "Thanks!"
-                    }
+                        "text": "Game Start"
+                    },
+                    "active": true
                 }
-            ],
-            "translation": [
-                -0.0001563,
-                0.1084579,
-                0.0000046
-            ],
-            "rotation": [
-                -0.7068095,
-                0.0,
-                0.0,
-                0.7074038
-            ],
-            "scaling": [
-                2.5,
-                3.7999999,
-                4.8000063
             ]
         },
         "200": {
@@ -270,26 +297,26 @@
                 {
                     "type": "text",
                     "text": {
-                        "text": "Welcome to\nWonderland",
+                        "text": "Shooting Game",
                         "material": "201"
                     }
                 }
             ],
             "translation": [
                 -0.0000023,
-                0.1554993,
-                -0.303415
+                0.15,
+                -0.2500037
             ],
             "rotation": [
-                -0.7068591,
+                -0.7071068,
                 0.0,
                 0.0,
-                0.7073543
+                0.7071068
             ],
             "scaling": [
-                1.5,
-                3.0000002,
-                1.5000001
+                2.0,
+                15.0,
+                1.5000004
             ]
         },
         "208": {
@@ -458,7 +485,7 @@
                         "mesh": "12",
                         "material": "22"
                     },
-                    "active": false
+                    "active": true
                 },
                 {
                     "type": "physx",
@@ -475,7 +502,8 @@
                     "type": "playerController",
                     "active": true,
                     "playerController": {
-                        "bulletManager": "272"
+                        "bulletManager": "272",
+                        "gameManager": "270"
                     }
                 }
             ],
@@ -486,7 +514,7 @@
             ],
             "translation": [
                 0.0,
-                1.0,
+                0.0,
                 -4.0
             ],
             "rotation": [
@@ -1853,7 +1881,8 @@
                     "type": "cursor",
                     "cursor": {
                         "collisionGroup": 0,
-                        "handedness": "none"
+                        "handedness": "none",
+                        "rayCastMode": "physx"
                     }
                 },
                 {
@@ -1969,7 +1998,9 @@
                         "enemyComponent": "264",
                         "enemy": "264",
                         "enemyMesh": "7",
-                        "enemyMaterial": "25"
+                        "enemyMaterial": "25",
+                        "gameManager": "270",
+                        "playerController": "266"
                     },
                     "active": true
                 }
@@ -2017,16 +2048,21 @@
             "parent": "269",
             "components": [
                 {
-                    "type": "gameManager"
+                    "type": "gameManager",
+                    "gameManager": {
+                        "buttonCustom": "197",
+                        "panel": "194"
+                    }
                 },
                 {
-                    "type": "text"
+                    "type": "text",
+                    "active": false
                 }
             ],
             "translation": [
                 0.0,
-                5.0,
-                -4.0
+                0.0,
+                0.0
             ],
             "rotation": [
                 0.0,
@@ -2035,8 +2071,8 @@
                 1.0
             ],
             "scaling": [
-                3.0,
-                3.0,
+                5.0,
+                5.0,
                 1.0
             ]
         },
@@ -2111,6 +2147,83 @@
                 -4.0
             ],
             "parent": "269"
+        },
+        "287": {
+            "name": "textManager",
+            "parent": "269",
+            "translation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "scaling": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "components": [
+                {
+                    "type": "textManager",
+                    "textManager": {
+                        "titleText": "200",
+                        "gameManager": "270",
+                        "startText": "198",
+                        "scoreText": "288",
+                        "resultText": "289",
+                        "playerController": "266"
+                    }
+                }
+            ]
+        },
+        "288": {
+            "name": "score",
+            "parent": "269",
+            "components": [
+                {
+                    "type": "text"
+                }
+            ],
+            "translation": [
+                0.0,
+                7.0,
+                -4.0
+            ],
+            "scaling": [
+                5.0,
+                5.0,
+                1.0
+            ]
+        },
+        "289": {
+            "name": "result",
+            "parent": "194",
+            "components": [
+                {
+                    "type": "text"
+                }
+            ],
+            "translation": [
+                -0.0000619,
+                0.15,
+                0.0000604
+            ],
+            "rotation": [
+                -0.7071068,
+                0.0,
+                0.0,
+                0.7071067
+            ],
+            "scaling": [
+                1.0,
+                7.5,
+                0.9999955
+            ]
         }
     },
     "meshes": {

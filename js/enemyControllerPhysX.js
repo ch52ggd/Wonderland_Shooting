@@ -1,7 +1,5 @@
 import {Component, Property, CollisionEventType} from '@wonderlandengine/api';
 
-//import {GameManager} from './gameManager.js';
-
 /**
  * enemyControllerPhysX
  */
@@ -9,12 +7,9 @@ export class EnemyControllerPhysX extends Component {
     static TypeName = 'enemyControllerPhysX';
     /* Properties that are configurable in the editor */
     static Properties = {
-        param: Property.float(1.0)
     };
 
     speed = 0.075;
-
-    time = 0;
 
     static onRegister(engine) {
         /* Triggered when this component class is registered.
@@ -29,13 +24,9 @@ export class EnemyControllerPhysX extends Component {
     start() {
         //console.log('start() with param', this.param);
 
-        //this.gameManager = this.game.getComponent(GameManager);
-
         this.object.name = "enemy";
 
         this.initCollision();
-
-        this.count = 0;
     }
 
     update(dt) {
@@ -72,7 +63,7 @@ export class EnemyControllerPhysX extends Component {
 
                     if(otherObj.includes("bullet")){
 
-                        this.count++;
+                        this.gameManager.isKill();
                         setTimeout(() => {this.object.destroy();}, 50);
                     }
 
